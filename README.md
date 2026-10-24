@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PureSpace: home cleaning booking
 
-## Getting Started
+Next.js 16 app with a built-in SQLite database. Customers book online, cleaners see their
+jobs, and admins manage bookings, cleaners and prices.
 
-First, run the development server:
+| Area | URL |
+|---|---|
+| Website + booking | `/`, `/book` |
+| Customer login / account | `/login`, `/account` |
+| Cleaner login / jobs | `/cleaner/login`, `/cleaner` |
+| Admin login / dashboard | `/admin/login`, `/admin` |
+
+## Run locally
+
+```bash
+npm install
+```
+
+Copy `.env.example` to `.env.local`, set an admin email/password (and optionally the demo cleaners), then:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The local database is created at `data/purespace.db`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/lib/server/scheduling.ts`: availability and the no-double-booking rules
+- `src/lib/server/bookings.ts`: create, reschedule, cancel, status changes
+- `src/lib/server/auth.ts`: sessions and role checks
+- `src/lib/config.ts`: phone, email, currency, timezone, opening hours, booking rules
+- `src/app/(site)/page.tsx`: landing page content (areas, reviews, FAQ)
 
-## Learn More
+## Docs
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [DEPLOYMENT.md](DEPLOYMENT.md): Hostinger + GitHub auto-deploy
+- [QA_REPORT.md](QA_REPORT.md): security audit, attack test results, usability review
+- `scripts/security-test.mjs`: 50+ automated attack and double-booking tests
