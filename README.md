@@ -1,4 +1,4 @@
-# PureSpace: home cleaning booking
+# Hoodie: home cleaning booking
 
 Next.js 16 app with a built-in SQLite database. Customers book online, cleaners see their
 jobs, and admins manage bookings, cleaners and prices.
@@ -22,7 +22,7 @@ Copy `.env.example` to `.env.local`, set an admin email/password (and optionally
 npm run dev
 ```
 
-The local database is created at `data/purespace.db`.
+The local database is created at `data/hoodie.db`.
 
 ## Where things live
 
@@ -30,7 +30,7 @@ The local database is created at `data/purespace.db`.
 - `src/lib/server/bookings.ts`: create, reschedule, cancel, status changes
 - `src/lib/server/auth.ts`: sessions and role checks
 - `src/lib/config.ts`: phone, email, currency, timezone, opening hours, booking rules
-- `src/app/(site)/page.tsx`: landing page content (areas, reviews, FAQ)
+- `src/app/(site)/page.tsx`: landing page content (reviews, FAQ)
 
 ## Docs
 

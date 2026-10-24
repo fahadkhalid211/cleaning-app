@@ -93,7 +93,7 @@ function assertValidStart(startMin: number, durationMin: number) {
 }
 
 const REF_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-const newRef = () => 'PS-' + Array.from({ length: 6 }, () => REF_ALPHABET[randomInt(REF_ALPHABET.length)]).join('');
+const newRef = () => 'HD-' + Array.from({ length: 6 }, () => REF_ALPHABET[randomInt(REF_ALPHABET.length)]).join('');
 
 function customerHasClash(db: DatabaseSync, customerId: number, date: string, start: number, duration: number, excludeId = -1) {
   return !!db
@@ -266,7 +266,7 @@ export function listForAdmin(db: DatabaseSync, filter: { from?: string; to?: str
 }
 
 function findRow(db: DatabaseSync, ref: unknown): BookingRow | undefined {
-  if (typeof ref !== 'string' || !/^PS-[A-Z0-9]{6}$/.test(ref)) return undefined;
+  if (typeof ref !== 'string' || !/^HD-[A-Z0-9]{6}$/.test(ref)) return undefined;
   return db.prepare(`${SELECT} WHERE b.ref = ?`).get(ref) as unknown as BookingRow | undefined;
 }
 

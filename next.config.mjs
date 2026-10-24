@@ -1,8 +1,9 @@
-import type { NextConfig } from 'next';
+// Plain JavaScript on purpose: Hostinger's build servers can't run Next's native
+// compiler (glibc too old), and the WebAssembly fallback can't compile a .ts config.
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-// No third-party scripts, frames or images are used, so everything is locked to our own origin.
+// No third-party scripts or frames are used, so everything is locked to our own origin.
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
@@ -27,18 +28,11 @@ const securityHeaders = [
   ...(isDev ? [] : [{ key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' }]),
 ];
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   poweredByHeader: false,
-  turbopack: {
-    rules: {
-      '*.css': {
-        loaders: ['@tailwindcss/turbopack'],
-        as: '*.css',
-      },
-    },
-  },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },

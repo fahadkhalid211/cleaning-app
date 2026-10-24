@@ -14,7 +14,7 @@ export interface SessionUser {
   phone: string;
 }
 
-export const SESSION_COOKIE = 'ps_session';
+export const SESSION_COOKIE = 'hd_session';
 
 // Staff sessions are shorter: a forgotten logged-in admin tab is the bigger risk.
 const SESSION_TTL_MS: Record<Role, number> = {

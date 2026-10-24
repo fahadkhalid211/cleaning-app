@@ -10,8 +10,8 @@ import { hashPassword } from './passwords';
 // so a fresh GitHub deploy never wipes customer bookings.
 function resolveDbPath(): string {
   if (process.env.DATABASE_PATH) return path.resolve(process.env.DATABASE_PATH);
-  if (process.env.NODE_ENV === 'production') return path.join(os.homedir(), 'purespace-data', 'purespace.db');
-  return path.join(process.cwd(), 'data', 'purespace.db');
+  if (process.env.NODE_ENV === 'production') return path.join(os.homedir(), 'hoodie-data', 'hoodie.db');
+  return path.join(process.cwd(), 'data', 'hoodie.db');
 }
 
 const SCHEMA = `
@@ -159,11 +159,11 @@ function open(): DatabaseSync {
   return db;
 }
 
-const globalForDb = globalThis as unknown as { __purespaceDb?: DatabaseSync };
+const globalForDb = globalThis as unknown as { __hoodieDb?: DatabaseSync };
 
 export function getDb(): DatabaseSync {
-  if (!globalForDb.__purespaceDb) globalForDb.__purespaceDb = open();
-  return globalForDb.__purespaceDb;
+  if (!globalForDb.__hoodieDb) globalForDb.__hoodieDb = open();
+  return globalForDb.__hoodieDb;
 }
 
 /**

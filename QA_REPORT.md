@@ -80,5 +80,5 @@ What the rebuild does:
 - **Payments**: "pay after the clean" model; no card processing integrated.
 - **Repeat visits**: weekly/fortnightly bookings get the discount, but only the first visit is booked.
 - **Placeholder content** to replace before launch: phone/email in `src/lib/config.ts`, the
-  sample reviews and the areas list in `src/app/(site)/page.tsx`.
+  sample reviews in `src/app/(site)/page.tsx`.
 - Rate limiting is in memory, fine for one server process; it resets when the app restarts.

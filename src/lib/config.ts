@@ -1,10 +1,10 @@
 // Shared, non-secret business settings. Safe to import from client and server.
 
 export const BRAND = {
-  name: 'PureSpace',
+  name: 'Hoodie',
   phone: '020 3000 0000',
   phoneHref: 'tel:+442030000000',
-  email: 'hello@purespace.example',
+  email: 'hello@hoodie.example',
 };
 
 export const CURRENCY = { code: 'GBP', symbol: '£', locale: 'en-GB' };

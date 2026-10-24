@@ -26,8 +26,8 @@ class Client {
     });
     const set = res.headers.get('set-cookie');
     if (set) {
-      const m = set.match(/ps_session=([^;]*)/);
-      if (m) this.cookie = m[1] ? `ps_session=${m[1]}` : '';
+      const m = set.match(/hd_session=([^;]*)/);
+      if (m) this.cookie = m[1] ? `hd_session=${m[1]}` : '';
     }
     let data = null;
     try {
@@ -132,7 +132,7 @@ async function main() {
   check('Customer cannot change prices', (await alice.req('/api/admin/services/regular', { method: 'PATCH', body: { hourlyRate: 1, minHours: 1 } })).status === 403);
 
   const forged = new Client();
-  forged.cookie = 'ps_session=' + 'A'.repeat(43);
+  forged.cookie = 'hd_session=' + 'A'.repeat(43);
   check('Forged session cookie rejected', (await forged.req('/api/bookings')).status === 401);
 
   // ---------- Input / tampering ----------

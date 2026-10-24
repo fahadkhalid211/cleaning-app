@@ -21,18 +21,11 @@ import { getCatalog } from '@/lib/server/catalog';
 import { ServiceIcon } from '@/components/ServiceIcon';
 import { buttonClass } from '@/components/styles';
 
-// Edit these to match the areas you really cover.
-const AREAS = [
-  'Camden', 'Islington', 'Hackney', 'Westminster', 'Kensington', 'Chelsea', 'Fulham', 'Hammersmith',
-  'Wandsworth', 'Clapham', 'Battersea', 'Lambeth', 'Southwark', 'Greenwich', 'Lewisham', 'Ealing',
-  'Richmond', 'Wimbledon', 'Barnet', 'Hampstead', 'Stratford', 'Canary Wharf',
-];
-
 // Sample reviews for layout. Replace with real, verifiable customer reviews before launch.
 const REVIEWS = [
-  { name: 'Margaret, Richmond', title: 'So easy, even for me', text: 'I booked over the phone the first time and online the second. The cleaner was punctual, polite and left the kitchen sparkling.' },
-  { name: 'David, Islington', title: 'Got our full deposit back', text: 'End of tenancy clean before we moved out. The letting agent had nothing to flag. Worth every penny.' },
-  { name: 'Priya, Clapham', title: 'Same lovely cleaner every fortnight', text: 'Moving a booking takes ten seconds in my account. I know exactly who is coming and what it costs.' },
+  { name: 'Margaret', title: 'So easy, even for me', text: 'I booked over the phone the first time and online the second. The cleaner was punctual, polite and left the kitchen sparkling.' },
+  { name: 'David', title: 'Got our full deposit back', text: 'End of tenancy clean before we moved out. The letting agent had nothing to flag. Worth every penny.' },
+  { name: 'Priya', title: 'Same lovely cleaner every fortnight', text: 'Moving a booking takes ten seconds in my account. I know exactly who is coming and what it costs.' },
 ];
 
 const FAQS = [
@@ -60,7 +53,6 @@ export default function HomePage() {
       <HowItWorks />
       <WhyUs />
       <Reviews />
-      <Areas />
       <Faq />
       <ClosingCta />
       <MobileBookBar />
@@ -89,7 +81,7 @@ function Hero() {
                 <Star key={i} className="size-4 fill-brand text-brand" aria-hidden />
               ))}
             </span>
-            Loved by homes across London
+            Loved by families
           </p>
           <h1 className="mt-6 text-[2.6rem] sm:text-5xl lg:text-[3.6rem] font-semibold leading-[1.05]">
             A spotless home, <span className="text-brand-strong">without the hassle.</span>
@@ -140,46 +132,22 @@ function Hero() {
 
 function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-md lg:max-w-none mb-10" aria-hidden>
-      <div className="absolute -right-24 -top-24 size-96 rounded-full bg-brand-soft" />
-      <div className="absolute -left-10 bottom-0 size-40 rounded-full bg-white/70" />
-      <div className="relative rounded-3xl bg-white p-6 sm:p-7 shadow-pop">
-        <div className="flex items-center justify-between">
-          <p className="font-semibold text-lg">Your next clean</p>
-          <span className="rounded-full bg-success-soft px-3 py-1 text-sm font-semibold text-success">Confirmed</span>
-        </div>
-        <div className="mt-6 flex items-center gap-4 rounded-2xl bg-soft p-4">
-          <span className="flex size-14 items-center justify-center rounded-2xl bg-brand text-white">
-            <ServiceIcon name="Sparkles" className="size-7" />
-          </span>
-          <div>
-            <p className="font-semibold text-lg">Regular cleaning</p>
-            <p className="text-muted">3 bedrooms · 2 bathrooms</p>
-          </div>
-        </div>
-        <dl className="mt-5 grid grid-cols-2 gap-4">
-          <div className="rounded-2xl border border-line p-4">
-            <dt className="text-muted text-sm">Date</dt>
-            <dd className="font-semibold">Thu 14 Nov</dd>
-          </div>
-          <div className="rounded-2xl border border-line p-4">
-            <dt className="text-muted text-sm">Arrival</dt>
-            <dd className="font-semibold">9:00 am</dd>
-          </div>
-        </dl>
-        <div className="mt-5 flex items-center justify-between border-t border-line pt-5">
-          <div className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-full bg-cream font-semibold text-brand-deep">M</span>
-            <div>
-              <p className="font-semibold">Maria</p>
-              <p className="text-sm text-muted">Your cleaner</p>
-            </div>
-          </div>
-          <p className="text-2xl font-semibold">£86.40</p>
-        </div>
-      </div>
-      <div className="absolute -left-4 sm:-left-8 -bottom-14 rounded-2xl bg-white px-5 py-4 shadow-pop flex items-center gap-3">
-        <CircleCheck className="size-7 text-success" />
+    <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+      <div className="absolute -right-16 -top-16 size-80 rounded-full bg-brand-soft" aria-hidden />
+      {/* Photo: Paige Cody on Unsplash (Unsplash License). Pre-sized WebP, no runtime image processing needed. */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- next/image needs sharp, which may not run on Hostinger */}
+      <img
+        src="/images/family-home-900.webp"
+        srcSet="/images/family-home-900.webp 900w, /images/family-home-1600.webp 1600w"
+        sizes="(min-width: 1024px) 560px, 100vw"
+        width={1600}
+        height={1068}
+        alt="A mother and her young son laughing together on a white sofa in a bright, tidy living room"
+        fetchPriority="high"
+        className="relative w-full aspect-[4/3] object-cover rounded-3xl shadow-pop"
+      />
+      <div className="absolute -left-3 sm:-left-6 -bottom-6 rounded-2xl bg-white px-5 py-4 shadow-pop flex items-center gap-3">
+        <CircleCheck className="size-7 text-success" aria-hidden />
         <div>
           <p className="font-semibold">No card needed</p>
           <p className="text-sm text-muted">Pay after the clean</p>
@@ -365,26 +333,6 @@ function Reviews() {
               <h3 className="mt-3 text-xl font-semibold">{r.title}</h3>
               <p className="mt-2 text-muted text-lg flex-1">{r.text}</p>
               <p className="mt-5 font-semibold">{r.name}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-function Areas() {
-  return (
-    <section className="py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-[0.8fr_1.2fr] gap-10">
-        <div>
-          <SectionHeading eyebrow="Where we work" title="Areas we cover" center={false} />
-          <p className="text-lg text-muted">Not sure if we cover your street? Enter your postcode when booking or give us a call. We are adding new areas all the time.</p>
-        </div>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 content-start">
-          {AREAS.map((a) => (
-            <li key={a} className="flex items-center gap-2 text-lg">
-              <MapPin className="size-5 text-brand-strong shrink-0" aria-hidden /> {a}
             </li>
           ))}
         </ul>

@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 // land on the right login page. This is only a convenience: every API route
 // checks the session and role itself, so skipping this proxy grants nothing.
 
-const SESSION_COOKIE = 'ps_session';
+const SESSION_COOKIE = 'hd_session';
 
 const AREAS: { prefix: string; login: string }[] = [
   { prefix: '/account', login: '/login' },
