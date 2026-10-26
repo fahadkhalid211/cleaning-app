@@ -22,7 +22,7 @@ export const POST = route<Ctx>(async (req, { params }) => {
   }
 
   const { depositAmount } = calculateDeposit(booking.total);
-  const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://powderblue-louse-144712.hostingersite.com';
+  const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://hoodie.services';
 
   const checkoutUrl = await createCheckoutSession({
     bookingRef: ref,

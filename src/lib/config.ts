@@ -4,7 +4,9 @@ export const BRAND = {
   name: 'Hoodie',
   phone: '020 3000 0000',
   phoneHref: 'tel:+442030000000',
-  email: 'hello@hoodie.example',
+  email: 'hello@hoodie.services',
+  domain: 'hoodie.services',
+  url: 'https://hoodie.services',
 };
 
 export const CURRENCY = { code: 'GBP', symbol: '£', locale: 'en-GB' };

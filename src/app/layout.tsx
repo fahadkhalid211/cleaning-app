@@ -11,8 +11,9 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://hoodie.services'),
   title: { default: `${BRAND.name} | Trusted home cleaning`, template: `%s | ${BRAND.name}` },
-  description: 'Book a vetted, insured home cleaner online in two minutes. Fixed prices, no card needed to book, free re-clean guarantee.',
+  description: 'Book a vetted, insured home cleaner online in two minutes. Fixed prices, transparent quotes, free re-clean guarantee.',
 };
 
 export const viewport: Viewport = {

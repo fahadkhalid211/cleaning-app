@@ -35,7 +35,7 @@ export const POST = route(async (req) => {
   let checkoutUrl: string | null = null;
   if (isStripeConfigured()) {
     const customer = getDb().prepare('SELECT name, email FROM users WHERE id = ?').get(customerId) as { name: string; email: string };
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://powderblue-louse-144712.hostingersite.com';
+    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://hoodie.services';
     checkoutUrl = await createCheckoutSession({
       bookingRef: ref,
       serviceTitle: draft.serviceTitle,
