@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { CalendarClock, Clock, LogOut, MapPin, Phone, Plus, User } from 'lucide-react';
+import { CalendarClock, Clock, Lock, LogOut, MapPin, Phone, Plus, User } from 'lucide-react';
 import { api, ApiError } from '@/lib/api';
 import { BRAND, formatMoney, SCHEDULE } from '@/lib/config';
 import { formatDateLong, formatTimeRange } from '@/lib/dates';
@@ -16,6 +16,7 @@ export function CustomerAccount() {
   const router = useRouter();
   const params = useSearchParams();
   const justBooked = params.get('booked');
+  const sessionId = params.get('session_id');
   const [me, setMe] = useState<MeResponse['user']>(null);
   const [bookings, setBookings] = useState<BookingView[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +73,12 @@ export function CustomerAccount() {
         </div>
       </div>
 
-      {confirmed && (
+      {sessionId && (
+        <Alert tone="success" title="Payment successful! Your deposit has been received." className="mt-8">
+          Your booking is confirmed and secured. We look forward to seeing you!
+        </Alert>
+      )}
+      {confirmed && !sessionId && (
         <Alert tone="success" title="Your booking is confirmed. Thank you!" className="mt-8">
           Your reference is <strong>{confirmed.ref}</strong>. We will see you on {formatDateLong(confirmed.date)} at {formatTimeRange(confirmed.startMin, confirmed.durationMin).split(' – ')[0]}.
         </Alert>
@@ -169,7 +175,24 @@ function BookingCard({ b, onCancel, onMove }: { b: BookingView; onCancel: () => 
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 justify-between">
             <h3 className="text-xl font-semibold">{b.serviceTitle}</h3>
-            <StatusBadge status={b.status} />
+            <div className="flex items-center gap-2 flex-wrap">
+              {b.paymentStatus === 'paid' && (
+                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
+                  Fully Paid
+                </span>
+              )}
+              {b.paymentStatus === 'deposit_paid' && (
+                <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800">
+                  Deposit Paid ({formatMoney(b.depositAmount || 0)})
+                </span>
+              )}
+              {(!b.paymentStatus || b.paymentStatus === 'unpaid') && b.status !== 'cancelled' && (
+                <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                  Deposit Unpaid
+                </span>
+              )}
+              <StatusBadge status={b.status} />
+            </div>
           </div>
           <ul className="mt-3 space-y-1.5 text-[1.02rem]">
             <li className="flex items-center gap-2">
@@ -191,6 +214,9 @@ function BookingCard({ b, onCancel, onMove }: { b: BookingView; onCancel: () => 
             </p>
             {b.canChange ? (
               <div className="flex flex-wrap gap-2">
+                {(!b.paymentStatus || b.paymentStatus === 'unpaid') && b.status !== 'cancelled' && (
+                  <PayDepositButton bookingRef={b.ref} depositAmount={b.depositAmount} />
+                )}
                 <Button variant="secondary" size="sm" onClick={onMove}>
                   <CalendarClock className="size-4" aria-hidden /> Change date or time
                 </Button>
@@ -322,5 +348,24 @@ function MoveDialog({ booking, onClose, onDone }: { booking: BookingView | null;
         <Spinner />
       )}
     </Modal>
+  );
+}
+
+function PayDepositButton({ bookingRef, depositAmount }: { bookingRef: string; depositAmount?: number }) {
+  const [busy, setBusy] = useState(false);
+  async function onPay() {
+    setBusy(true);
+    try {
+      const res = await api<{ checkoutUrl: string }>(`/api/bookings/${bookingRef}/checkout`, { method: 'POST' });
+      if (res.checkoutUrl) window.location.href = res.checkoutUrl;
+    } catch (err) {
+      setBusy(false);
+      alert((err as ApiError).message);
+    }
+  }
+  return (
+    <Button variant="primary" size="sm" onClick={onPay} loading={busy}>
+      <Lock className="size-3.5" aria-hidden /> Pay deposit {depositAmount ? `(${formatMoney(depositAmount)})` : ''}
+    </Button>
   );
 }

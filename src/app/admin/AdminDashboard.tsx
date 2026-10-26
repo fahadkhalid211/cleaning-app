@@ -270,7 +270,18 @@ function Bookings({ call }: { call: Call }) {
                   <td className="px-4 py-3">
                     <StatusBadge status={b.status} />
                   </td>
-                  <td className="px-4 py-3 text-right font-semibold tabular-nums">{formatMoney(b.total)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <p className="font-semibold tabular-nums">{formatMoney(b.total)}</p>
+                    {b.paymentStatus === 'paid' && <span className="text-xs font-semibold text-emerald-600 block">Paid</span>}
+                    {b.paymentStatus === 'deposit_paid' && (
+                      <span className="text-xs font-medium text-blue-600 block">
+                        Deposit {formatMoney(b.depositAmount || 0)}
+                      </span>
+                    )}
+                    {(!b.paymentStatus || b.paymentStatus === 'unpaid') && (
+                      <span className="text-xs text-muted block">Unpaid</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <Button size="sm" variant="secondary" onClick={() => setOpen(b)}>
                       Manage
@@ -318,6 +329,16 @@ function BookingModal({
             <Info label="Extras" value={b.addons.map((a) => a.name).join(', ') || 'None'} />
             {b.notes && <Info label="Notes" value={b.notes} />}
             <Info label="Price" value={`${formatMoney(b.total)} (discount ${formatMoney(b.discount)})`} />
+            <Info
+              label="Payment"
+              value={
+                b.paymentStatus === 'paid'
+                  ? `Fully Paid (${formatMoney(b.total)})`
+                  : b.paymentStatus === 'deposit_paid'
+                  ? `Deposit Paid: ${formatMoney(b.depositAmount || 0)} · Balance: ${formatMoney(b.total - (b.depositAmount || 0))}`
+                  : 'Unpaid / Pending'
+              }
+            />
           </dl>
           <div className="grid sm:grid-cols-2 gap-4 border-t border-line pt-5">
             <div>

@@ -81,7 +81,19 @@ export function CleanerDashboard() {
                     <Card className="p-5 sm:p-6">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <p className="text-2xl font-semibold">{formatTimeRange(j.startMin, j.durationMin)}</p>
-                        <StatusBadge status={j.status} />
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {j.paymentStatus === 'paid' && (
+                            <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
+                              Paid in full
+                            </span>
+                          )}
+                          {j.paymentStatus === 'deposit_paid' && (
+                            <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800">
+                              Deposit paid (£{(j.depositAmount || 0).toFixed(2)})
+                            </span>
+                          )}
+                          <StatusBadge status={j.status} />
+                        </div>
                       </div>
                       <p className="mt-1 text-lg font-medium">{j.serviceTitle}</p>
 

@@ -4,6 +4,7 @@ import type { Frequency, Rooms } from './pricing';
 
 export type BookingStatus = 'confirmed' | 'on_the_way' | 'in_progress' | 'completed' | 'cancelled';
 export type AccessMethod = 'home' | 'key_safe' | 'concierge' | 'other';
+export type PaymentStatus = 'unpaid' | 'deposit_paid' | 'paid';
 
 export const STATUS_LABEL: Record<BookingStatus, string> = {
   confirmed: 'Confirmed',
@@ -11,6 +12,12 @@ export const STATUS_LABEL: Record<BookingStatus, string> = {
   in_progress: 'Cleaning in progress',
   completed: 'Completed',
   cancelled: 'Cancelled',
+};
+
+export const PAYMENT_STATUS_LABEL: Record<PaymentStatus, string> = {
+  unpaid: 'Payment Pending',
+  deposit_paid: 'Deposit Paid',
+  paid: 'Fully Paid',
 };
 
 export const ACCESS_LABEL: Record<AccessMethod, string> = {
@@ -45,6 +52,8 @@ export interface Addon {
 export interface Catalog {
   services: Service[];
   addons: Addon[];
+  depositPercent?: number;
+  stripeEnabled?: boolean;
 }
 
 export interface Slot {
@@ -73,6 +82,9 @@ export interface BookingView {
   subtotal: number;
   discount: number;
   total: number;
+  depositAmount?: number;
+  paymentStatus?: PaymentStatus;
+  stripeSessionId?: string | null;
   createdAt: string;
   canChange: boolean;
   cleaner: { id: number; name: string; phone?: string } | null;

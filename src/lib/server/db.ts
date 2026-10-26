@@ -82,6 +82,10 @@ CREATE TABLE IF NOT EXISTS bookings (
   subtotal      REAL NOT NULL,
   discount      REAL NOT NULL,
   total         REAL NOT NULL,
+  deposit_amount REAL NOT NULL DEFAULT 0,
+  payment_status TEXT NOT NULL DEFAULT 'unpaid',
+  stripe_session_id TEXT,
+  stripe_payment_intent_id TEXT,
   request_key   TEXT,
   created_at    TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
@@ -103,6 +107,27 @@ CREATE TABLE IF NOT EXISTS audit_log (
 );
 `;
 
+function migrate(db: DatabaseSync) {
+  try {
+    const cols = db.prepare("PRAGMA table_info(bookings)").all() as { name: string }[];
+    const colNames = new Set(cols.map((c) => c.name));
+    if (!colNames.has('deposit_amount')) {
+      db.exec('ALTER TABLE bookings ADD COLUMN deposit_amount REAL NOT NULL DEFAULT 0;');
+    }
+    if (!colNames.has('payment_status')) {
+      db.exec("ALTER TABLE bookings ADD COLUMN payment_status TEXT NOT NULL DEFAULT 'unpaid';");
+    }
+    if (!colNames.has('stripe_session_id')) {
+      db.exec('ALTER TABLE bookings ADD COLUMN stripe_session_id TEXT;');
+    }
+    if (!colNames.has('stripe_payment_intent_id')) {
+      db.exec('ALTER TABLE bookings ADD COLUMN stripe_payment_intent_id TEXT;');
+    }
+  } catch (e) {
+    console.warn('[db] Migration notice:', e);
+  }
+}
+
 function seed(db: DatabaseSync) {
   const serviceCount = db.prepare('SELECT COUNT(*) AS n FROM services').get() as { n: number };
   if (serviceCount.n === 0) {
@@ -113,20 +138,23 @@ function seed(db: DatabaseSync) {
     SERVICE_SEED.forEach((s, i) =>
       ins.run(s.id, s.title, s.short, s.description, s.hourlyRate, s.minHours, s.timeMultiplier, s.icon, JSON.stringify(s.includes), i),
     );
+    console.log(`[db] Seeded ${SERVICE_SEED.length} services`);
   }
 
   const addonCount = db.prepare('SELECT COUNT(*) AS n FROM addons').get() as { n: number };
   if (addonCount.n === 0) {
     const ins = db.prepare('INSERT INTO addons (id, name, description, price, duration_min, sort) VALUES (?, ?, ?, ?, ?, ?)');
     ADDON_SEED.forEach((a, i) => ins.run(a.id, a.name, a.description, a.price, a.durationMin, i));
+    console.log(`[db] Seeded ${ADDON_SEED.length} addons`);
   }
 
-  const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME } = process.env;
+  // Admin account sync: Always verify / sync admin credentials on boot if ADMIN_EMAIL is set
+  const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
   if (ADMIN_EMAIL && ADMIN_PASSWORD && ADMIN_PASSWORD.length >= 8) {
     const cleanEmail = ADMIN_EMAIL.trim().toLowerCase();
     const existing = db.prepare('SELECT id, role FROM users WHERE email = ?').get(cleanEmail) as { id: number; role: string } | undefined;
     if (existing) {
-      db.prepare("UPDATE users SET role = 'admin', name = ?, password_hash = ?, active = 1 WHERE id = ?").run(
+      db.prepare("UPDATE users SET name = ?, password_hash = ?, role = 'admin', active = 1 WHERE id = ?").run(
         ADMIN_NAME || 'Hoodie',
         hashPassword(ADMIN_PASSWORD),
         existing.id,
@@ -173,6 +201,7 @@ function open(): DatabaseSync {
   const db = new DatabaseSync(file);
   db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000; PRAGMA synchronous = NORMAL;');
   db.exec(SCHEMA);
+  migrate(db);
   seed(db);
   console.log(`[db] Using ${file}`);
   return db;

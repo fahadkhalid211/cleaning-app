@@ -107,7 +107,7 @@ function customerHasClash(db: DatabaseSync, customerId: number, date: string, st
 
 const SLOT_TAKEN = 'Sorry, that time was just booked by someone else. Please pick another time.';
 
-export function createBooking(customerId: number, d: BookingDraft, requestKey: string | null): string {
+export function createBooking(customerId: number, d: BookingDraft, requestKey: string | null, depositAmount = 0): string {
   try {
     return transaction((db) => {
       if (requestKey) {
@@ -128,14 +128,14 @@ export function createBooking(customerId: number, d: BookingDraft, requestKey: s
           db.prepare(
             `INSERT INTO bookings (ref, customer_id, cleaner_id, service_id, service_title, frequency, rooms_json, addons_json,
                date, start_min, duration_min, status, street, city, postcode, access_method, access_notes, has_pets, notes,
-               subtotal, discount, total, request_key)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+               subtotal, discount, total, deposit_amount, payment_status, request_key)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'unpaid', ?)`,
           ).run(
             ref, customerId, cleanerId, d.serviceId, d.serviceTitle, d.frequency, JSON.stringify(d.rooms), JSON.stringify(d.addons),
             d.date, d.startMin, d.durationMin, d.street, d.city, d.postcode, d.accessMethod, d.accessNotes, d.hasPets ? 1 : 0, d.notes,
-            d.subtotal, d.discount, d.total, requestKey,
+            d.subtotal, d.discount, d.total, depositAmount, requestKey,
           );
-          audit(customerId, 'booking.create', `${ref} ${d.date} ${d.startMin} cleaner=${cleanerId} total=${d.total}`);
+          audit(customerId, 'booking.create', `${ref} ${d.date} ${d.startMin} cleaner=${cleanerId} total=${d.total} deposit=${depositAmount}`);
           return ref;
         } catch (err) {
           // Only a reference-number collision is worth retrying; anything else is a real conflict.
@@ -176,6 +176,10 @@ interface BookingRow {
   subtotal: number;
   discount: number;
   total: number;
+  deposit_amount?: number;
+  payment_status?: string;
+  stripe_session_id?: string | null;
+  stripe_payment_intent_id?: string | null;
   created_at: string;
   cleaner_name: string;
   cleaner_phone: string;
@@ -224,6 +228,9 @@ function toView(r: BookingRow, audience: Audience): BookingView {
     subtotal: r.subtotal,
     discount: r.discount,
     total: r.total,
+    depositAmount: r.deposit_amount ?? 0,
+    paymentStatus: (r.payment_status as BookingView['paymentStatus']) ?? 'unpaid',
+    stripeSessionId: r.stripe_session_id ?? null,
     createdAt: r.created_at,
     canChange: audience === 'customer' ? changeable(r) : false,
     cleaner: { id: r.cleaner_id, name: audience === 'customer' ? r.cleaner_name.split(' ')[0] : r.cleaner_name },
