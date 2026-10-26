@@ -94,3 +94,47 @@ export function RegisterForm() {
     </form>
   );
 }
+
+export function CleanerRegisterForm() {
+  const router = useRouter();
+  const params = useSearchParams();
+  const [f, setF] = useState({ name: '', email: '', phone: '', password: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setErrors({});
+    setBusy(true);
+    try {
+      await api('/api/auth/register-cleaner', { body: f });
+      router.replace(safeNext(params.get('next'), '/cleaner'));
+      router.refresh();
+    } catch (err) {
+      const ae = err as ApiError;
+      if (ae.field) setErrors({ [ae.field]: ae.message });
+      else setError(ae.message);
+      setBusy(false);
+    }
+  }
+
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
+      {error && <Alert tone="error">{error}</Alert>}
+      <TextField label="Full name" autoComplete="name" value={f.name} onChange={set('name')} error={errors.name} maxLength={80} />
+      <TextField label="Email address" type="email" autoComplete="email" value={f.email} onChange={set('email')} error={errors.email} maxLength={254} />
+      <TextField label="Phone number" type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} error={errors.phone} maxLength={25} />
+      <TextField label="Choose a password" hint="At least 8 characters." type="password" autoComplete="new-password" value={f.password} onChange={set('password')} error={errors.password} />
+      <Button type="submit" size="lg" loading={busy} className="w-full">
+        Sign up as cleaner
+      </Button>
+      <p className="text-center text-xs text-muted">
+        By signing up, you agree to our cleaner guidelines and terms.
+      </p>
+    </form>
+  );
+}

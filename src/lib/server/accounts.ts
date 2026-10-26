@@ -29,6 +29,30 @@ export async function registerCustomer(body: Record<string, unknown>): Promise<n
   return id;
 }
 
+/** Creates a cleaner account and logs them in. */
+export async function registerCleaner(body: Record<string, unknown>): Promise<number> {
+  const name = v.text(body.name, 'name', 'Your name', { min: 2, max: 80 });
+  const email = v.email(body.email);
+  const phone = v.phone(body.phone);
+  const password = v.password(body.password);
+
+  let id: number;
+  try {
+    const res = getDb()
+      .prepare("INSERT INTO users (role, name, email, phone, password_hash, active) VALUES ('cleaner', ?, ?, ?, ?, 1)")
+      .run(name, email, phone, hashPassword(password));
+    id = Number(res.lastInsertRowid);
+  } catch (err) {
+    if (isUniqueViolation(err)) {
+      throw new HttpError(409, 'There is already an account with this email. Please log in instead.', 'email');
+    }
+    throw err;
+  }
+  audit(id, 'cleaner.register', email);
+  await startSession({ id, role: 'cleaner' });
+  return id;
+}
+
 export function createCleaner(adminId: number, body: Record<string, unknown>) {
   const name = v.text(body.name, 'name', 'Name', { min: 2, max: 80 });
   const email = v.email(body.email);

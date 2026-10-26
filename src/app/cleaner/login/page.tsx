@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
-import { StaffLogin } from '@/components/auth/StaffLogin';
+import { CleanerAuth } from '@/components/auth/CleanerAuth';
 
-export const metadata: Metadata = { title: 'Cleaner log in', robots: { index: false } };
+export const metadata: Metadata = {
+  title: 'Cleaner log in & registration',
+  description: 'Log in to your cleaner account or apply to join our cleaning team.',
+  robots: { index: false },
+};
 
 export default function CleanerLoginPage() {
-  return <StaffLogin portal="cleaner" title="Cleaner log in" sub="See your jobs for today and the days ahead." />;
+  return <CleanerAuth initialTab="login" />;
 }

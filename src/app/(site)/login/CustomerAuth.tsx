@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { LoginForm, RegisterForm } from '@/components/auth/AuthForms';
 import { Card, cx } from '@/components/ui';
@@ -26,6 +27,13 @@ export function CustomerAuth() {
       </div>
 
       <div className="mt-6">{tab === 'login' ? <LoginForm portal="customer" /> : <RegisterForm />}</div>
+
+      <div className="mt-8 pt-6 border-t border-line text-center text-sm text-muted">
+        Are you a cleaner looking for work?{' '}
+        <Link href="/cleaner/signup" className="font-semibold text-brand-strong hover:underline">
+          Join our cleaning team
+        </Link>
+      </div>
     </Card>
   );
 }

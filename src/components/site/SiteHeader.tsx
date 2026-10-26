@@ -35,18 +35,25 @@ export function SiteHeader() {
       {/* Utility bar */}
       <div className="hidden md:block bg-ink text-white text-[0.9rem]">
         <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between">
-          <nav aria-label="Audience" className="flex items-center gap-1">
-            <span className="rounded-full bg-white/15 px-3 py-0.5 font-semibold">For homes</span>
-            <Link href="/#contact" className="rounded-full px-3 py-0.5 text-white/80 hover:text-white">
+          <nav aria-label="Audience" className="flex items-center gap-1.5">
+            <span className="rounded-full bg-white/15 px-3 py-0.5 font-semibold text-xs">For homes</span>
+            <Link href="/#business" className="rounded-full px-3 py-0.5 text-white/80 hover:text-white text-xs">
               For businesses
             </Link>
+            <span className="text-white/30 text-xs">|</span>
+            <Link href="/cleaner/signup" className="rounded-full px-3 py-0.5 text-brand-soft hover:text-white font-medium text-xs">
+              Become a cleaner
+            </Link>
           </nav>
-          <div className="flex items-center gap-6 text-white/85">
+          <div className="flex items-center gap-6 text-white/85 text-xs sm:text-[0.85rem]">
+            <Link href="/cleaner/login" className="text-white/75 hover:text-white transition">
+              Cleaner portal
+            </Link>
             <span className="inline-flex items-center gap-1.5">
-              <Clock className="size-4" aria-hidden /> Mon–Sat, 8am–6pm
+              <Clock className="size-3.5" aria-hidden /> Mon–Sat, 8am–6pm
             </span>
             <a href={BRAND.phoneHref} className="inline-flex items-center gap-1.5 font-semibold text-white hover:underline">
-              <Phone className="size-4" aria-hidden /> {BRAND.phone}
+              <Phone className="size-3.5" aria-hidden /> {BRAND.phone}
             </a>
           </div>
         </div>
@@ -82,6 +89,9 @@ export function SiteHeader() {
           </Link>
           <Link href="/#faq" className="rounded-full px-4 py-2 hover:bg-soft">
             Help
+          </Link>
+          <Link href="/cleaner/signup" className="rounded-full px-4 py-2 hover:bg-soft text-brand-deep font-semibold">
+            Clean with us
           </Link>
         </nav>
 
@@ -140,6 +150,17 @@ export function SiteHeader() {
               <li><Link href="/#how-it-works" className="block py-4 text-lg font-medium">How it works</Link></li>
               <li><Link href="/#prices" className="block py-4 text-lg font-medium">Prices</Link></li>
               <li><Link href="/#faq" className="block py-4 text-lg font-medium">Help & questions</Link></li>
+              <li><Link href="/#business" className="block py-4 text-lg font-medium">For businesses</Link></li>
+              <li>
+                <Link href="/cleaner/signup" className="block py-4 text-lg font-semibold text-brand-strong">
+                  Become a cleaner (Sign up)
+                </Link>
+              </li>
+              <li>
+                <Link href="/cleaner/login" className="block py-4 text-base font-medium text-muted">
+                  Cleaner portal log in
+                </Link>
+              </li>
             </ul>
             <a href={BRAND.phoneHref} className="flex items-center gap-3 rounded-card bg-soft p-4">
               <Phone className="size-6 text-brand-strong" aria-hidden />

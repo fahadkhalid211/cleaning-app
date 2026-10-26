@@ -37,9 +37,10 @@ export function SiteFooter() {
         </FooterCol>
 
         <FooterCol title="Our team">
-          <FooterLink href="/cleaner/login">Cleaner log in</FooterLink>
+          <FooterLink href="/cleaner/login">Cleaner portal</FooterLink>
+          <FooterLink href="/cleaner/signup">Sign up as cleaner</FooterLink>
           <FooterLink href="/admin/login">Staff admin</FooterLink>
-          <FooterLink href="/#contact">Work with us</FooterLink>
+          <FooterLink href="/#business">For businesses</FooterLink>
         </FooterCol>
       </div>
       <div className="border-t border-white/10">

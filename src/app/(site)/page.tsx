@@ -348,7 +348,7 @@ function Faq() {
 function ClosingCta() {
   return (
     <section id="contact" className="scroll-mt-28 py-20">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 space-y-12">
         <div className="rounded-3xl bg-brand-strong px-6 py-14 sm:px-14 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-semibold">Ready for a cleaner home?</h2>
           <p className="mt-4 text-lg text-white/90">See your price in under a minute. No card needed.</p>
@@ -359,6 +359,49 @@ function ClosingCta() {
             <a href={BRAND.phoneHref} className={buttonClass('secondary', 'lg', 'border-white/0')}>
               <Phone className="size-5" aria-hidden /> Call {BRAND.phone}
             </a>
+          </div>
+        </div>
+
+        {/* Commercial & Cleaner Opportunity Section */}
+        <div id="business" className="scroll-mt-28 grid md:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-line bg-white p-8 shadow-card flex flex-col justify-between">
+            <div>
+              <span className="inline-block rounded-full bg-soft px-3 py-1 text-xs font-semibold uppercase tracking-wider text-muted">
+                Commercial & Offices
+              </span>
+              <h3 className="mt-4 text-2xl font-semibold">For businesses & workspaces</h3>
+              <p className="mt-2 text-muted">
+                Need regular office, retail, or commercial premises cleaning? We offer vetted cleaners, flexible invoicing, and dedicated account support.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href={BRAND.phoneHref} className={buttonClass('secondary', 'md')}>
+                <Phone className="size-4" aria-hidden /> Speak to our team
+              </a>
+              <a href={`mailto:${BRAND.email}?subject=Commercial%20Cleaning%20Enquiry`} className={buttonClass('ghost', 'md')}>
+                Email enquiry
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-line bg-white p-8 shadow-card flex flex-col justify-between">
+            <div>
+              <span className="inline-block rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-deep">
+                Careers & Cleaners
+              </span>
+              <h3 className="mt-4 text-2xl font-semibold">Work with us as a cleaner</h3>
+              <p className="mt-2 text-muted">
+                Looking for reliable, well-paid cleaning jobs in your local area? Choose your own hours, manage your jobs online, and get paid weekly.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/cleaner/signup" className={buttonClass('primary', 'md')}>
+                Sign up as cleaner
+              </Link>
+              <Link href="/cleaner/login" className={buttonClass('secondary', 'md')}>
+                Cleaner portal log in
+              </Link>
+            </div>
           </div>
         </div>
       </div>
