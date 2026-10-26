@@ -8,7 +8,6 @@ import {
   Check,
   CircleCheck,
   Leaf,
-  MapPin,
   Phone,
   Quote,
   RefreshCw,
@@ -97,25 +96,11 @@ function Hero() {
             ))}
           </ul>
 
-          <form action="/book" method="get" className="mt-9 rounded-2xl bg-white p-3 shadow-pop flex flex-col sm:flex-row gap-3 max-w-xl">
-            <label htmlFor="hero-postcode" className="sr-only">
-              Your postcode
-            </label>
-            <div className="relative flex-1">
-              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted" aria-hidden />
-              <input
-                id="hero-postcode"
-                name="postcode"
-                placeholder="Enter your postcode"
-                autoComplete="postal-code"
-                maxLength={10}
-                className="w-full min-h-14 rounded-xl bg-soft pl-12 pr-4 text-lg placeholder:text-muted focus:outline-none focus:ring-4 focus:ring-brand-soft"
-              />
-            </div>
-            <button type="submit" className={buttonClass('primary', 'lg', 'rounded-xl')}>
-              See prices <ArrowRight className="size-5" aria-hidden />
-            </button>
-          </form>
+          <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <Link href="/book" className={buttonClass('primary', 'lg', 'shadow-pop')}>
+              Book a clean <ArrowRight className="size-5" aria-hidden />
+            </Link>
+          </div>
           <p className="mt-4 text-muted">
             Prefer to talk?{' '}
             <a href={BRAND.phoneHref} className="font-semibold text-ink underline underline-offset-4">
@@ -133,16 +118,12 @@ function Hero() {
 function HeroVisual() {
   return (
     <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-      <div className="absolute -right-16 -top-16 size-80 rounded-full bg-brand-soft" aria-hidden />
-      {/* Photo: Paige Cody on Unsplash (Unsplash License). Pre-sized WebP, no runtime image processing needed. */}
-      {/* eslint-disable-next-line @next/next/no-img-element -- next/image needs sharp, which may not run on Hostinger */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/family-home-900.webp"
-        srcSet="/images/family-home-900.webp 900w, /images/family-home-1600.webp 1600w"
-        sizes="(min-width: 1024px) 560px, 100vw"
-        width={1600}
-        height={1068}
-        alt="A mother and her young son laughing together on a white sofa in a bright, tidy living room"
+        src="/images/hoodie.jpg"
+        width={5818}
+        height={3879}
+        alt="Professional cleaner ready for home cleaning"
         fetchPriority="high"
         className="relative w-full aspect-[4/3] object-cover rounded-3xl shadow-pop"
       />

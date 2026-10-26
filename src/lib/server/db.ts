@@ -121,19 +121,38 @@ function seed(db: DatabaseSync) {
     ADDON_SEED.forEach((a, i) => ins.run(a.id, a.name, a.description, a.price, a.durationMin, i));
   }
 
-  const admin = db.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get();
   const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME } = process.env;
-  if (!admin) {
-    if (ADMIN_EMAIL && ADMIN_PASSWORD && ADMIN_PASSWORD.length >= 12) {
-      db.prepare("INSERT INTO users (role, name, email, password_hash) VALUES ('admin', ?, ?, ?)").run(
-        ADMIN_NAME || 'Administrator',
-        ADMIN_EMAIL.trim().toLowerCase(),
+  if (ADMIN_EMAIL && ADMIN_PASSWORD && ADMIN_PASSWORD.length >= 8) {
+    const cleanEmail = ADMIN_EMAIL.trim().toLowerCase();
+    const existing = db.prepare('SELECT id, role FROM users WHERE email = ?').get(cleanEmail) as { id: number; role: string } | undefined;
+    if (existing) {
+      db.prepare("UPDATE users SET role = 'admin', name = ?, password_hash = ?, active = 1 WHERE id = ?").run(
+        ADMIN_NAME || 'Hoodie',
         hashPassword(ADMIN_PASSWORD),
+        existing.id,
       );
-      console.log(`[db] Created admin account for ${ADMIN_EMAIL}`);
+      console.log(`[db] Synced admin account for ${cleanEmail}`);
     } else {
-      console.warn('[db] No admin account yet. Set ADMIN_EMAIL and ADMIN_PASSWORD (12+ characters) and restart.');
+      const anyAdmin = db.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get() as { id: number } | undefined;
+      if (anyAdmin) {
+        db.prepare("UPDATE users SET name = ?, email = ?, password_hash = ?, active = 1 WHERE id = ?").run(
+          ADMIN_NAME || 'Hoodie',
+          cleanEmail,
+          hashPassword(ADMIN_PASSWORD),
+          anyAdmin.id,
+        );
+        console.log(`[db] Updated admin account to ${cleanEmail}`);
+      } else {
+        db.prepare("INSERT INTO users (role, name, email, password_hash) VALUES ('admin', ?, ?, ?)").run(
+          ADMIN_NAME || 'Hoodie',
+          cleanEmail,
+          hashPassword(ADMIN_PASSWORD),
+        );
+        console.log(`[db] Created admin account for ${cleanEmail}`);
+      }
     }
+  } else if (!db.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get()) {
+    console.warn('[db] No admin account yet. Set ADMIN_EMAIL and ADMIN_PASSWORD (8+ characters) and restart.');
   }
 
   // Optional demo cleaners so a fresh install can take bookings straight away.
