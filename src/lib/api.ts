@@ -27,5 +27,8 @@ export async function api<T>(url: string, init?: { method?: string; body?: unkno
 /** Only allow redirects back into this site, never to another domain. */
 export function safeNext(next: string | null, fallback: string): string {
   if (!next || !next.startsWith('/') || next.startsWith('//') || next.includes('\\')) return fallback;
-  return next;
+  // Only known pages, so a stale or mistyped ?next= never lands on a 404.
+  const path = next.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+  const known = ['/', '/book', '/login', '/account', '/cleaner', '/cleaner/login', '/cleaner/signup', '/admin', '/admin/login'];
+  return known.includes(path) ? next : fallback;
 }
