@@ -242,7 +242,7 @@ export function BookingWizard() {
   if (!catalog || !draft || !service || !q || me === undefined) return <Spinner label="Loading booking form…" />;
 
   const depositPercent = catalog.depositPercent ?? 20;
-  const stripeEnabled = catalog.stripeEnabled ?? false;
+  const paymentsEnabled = catalog.paymentsEnabled ?? false;
   const depositAmount = depositPercent >= 100 ? q.total : Math.round(q.total * (depositPercent / 100) * 100) / 100;
   const balanceAmount = Math.round((q.total - depositAmount) * 100) / 100;
 
@@ -461,7 +461,7 @@ export function BookingWizard() {
                     <span className="block text-muted">{ACCESS_LABEL[draft.accessMethod]}</span>
                   </ReviewRow>
                 </Card>
-                {stripeEnabled && depositPercent < 100 && (
+                {paymentsEnabled && depositPercent < 100 && (
                   <div className="mt-4 rounded-xl border border-line bg-soft/50 p-4 space-y-2 text-sm">
                     <div className="flex justify-between font-semibold text-brand-deep">
                       <span>Deposit due now ({depositPercent}%)</span>
@@ -493,7 +493,7 @@ export function BookingWizard() {
             ) : (
               <Button size="lg" onClick={submit} loading={submitting}>
                 <Lock className="size-4" aria-hidden />
-                {stripeEnabled
+                {paymentsEnabled
                   ? depositPercent >= 100
                     ? `Pay & confirm · ${formatMoney(q.total)}`
                     : `Pay deposit · ${formatMoney(depositAmount)}`
@@ -503,7 +503,7 @@ export function BookingWizard() {
           </div>
         </div>
 
-        <Summary draft={draft} serviceTitle={service.title} q={q} addons={chosenAddons} depositPercent={depositPercent} stripeEnabled={stripeEnabled} />
+        <Summary draft={draft} serviceTitle={service.title} q={q} addons={chosenAddons} depositPercent={depositPercent} paymentsEnabled={paymentsEnabled} />
       </div>
 
       {/* Mobile bottom bar */}
@@ -515,9 +515,9 @@ export function BookingWizard() {
             </button>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-muted">{stripeEnabled && depositPercent < 100 ? 'Deposit' : 'Total'}</p>
+            <p className="text-sm text-muted">{paymentsEnabled && depositPercent < 100 ? 'Deposit' : 'Total'}</p>
             <p className="text-xl font-semibold leading-tight">
-              {formatMoney(stripeEnabled && depositPercent < 100 ? depositAmount : q.total)}
+              {formatMoney(paymentsEnabled && depositPercent < 100 ? depositAmount : q.total)}
             </p>
           </div>
           {step < 3 ? (
@@ -526,7 +526,7 @@ export function BookingWizard() {
             </Button>
           ) : (
             <Button size="lg" onClick={submit} loading={submitting} className="px-7">
-              {stripeEnabled ? 'Pay deposit' : 'Confirm'}
+              {paymentsEnabled ? 'Pay deposit' : 'Confirm'}
             </Button>
           )}
         </div>
@@ -644,14 +644,14 @@ function Summary({
   q,
   addons,
   depositPercent,
-  stripeEnabled,
+  paymentsEnabled,
 }: {
   draft: Draft;
   serviceTitle: string;
   q: ReturnType<typeof quote>;
   addons: { id: string; name: string; price: number }[];
   depositPercent?: number;
-  stripeEnabled?: boolean;
+  paymentsEnabled?: boolean;
 }) {
   const percent = depositPercent ?? 20;
   const depositAmount = percent >= 100 ? q.total : Math.round(q.total * (percent / 100) * 100) / 100;
@@ -680,7 +680,7 @@ function Summary({
           <span className="text-3xl font-semibold">{formatMoney(q.total)}</span>
         </div>
 
-        {stripeEnabled && percent < 100 && (
+        {paymentsEnabled && percent < 100 && (
           <dl className="mt-4 space-y-2 rounded-xl bg-soft p-3.5 text-sm">
             <div className="flex justify-between font-semibold text-brand-deep">
               <dt>Deposit due now ({percent}%)</dt>
@@ -696,13 +696,13 @@ function Summary({
         <div className="mt-4 rounded-lg bg-soft px-4 py-3 text-xs text-muted space-y-1">
           <p className="font-semibold text-ink flex items-center gap-1.5">
             <Lock className="size-3.5 text-brand-strong" aria-hidden />
-            {stripeEnabled ? 'Secure payment via Stripe' : 'Pay after your clean'}
+            {paymentsEnabled ? 'Secure payment via PayPal' : 'Pay after your clean'}
           </p>
           <p>
-            {stripeEnabled
+            {paymentsEnabled
               ? percent < 100
                 ? `Only ${percent}% deposit is charged now. Remaining balance is payable after your clean.`
-                : 'Full payment processed securely via card or digital wallet.'
+                : 'Full payment processed securely via PayPal (pay with your PayPal balance or a card).'
               : 'No upfront charge. Pay directly after your clean.'}
           </p>
         </div>

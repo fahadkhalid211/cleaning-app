@@ -5,7 +5,7 @@ import { createBooking, listForCustomer, parseDraft } from '@/lib/server/booking
 import { getCatalog } from '@/lib/server/catalog';
 import { getDb } from '@/lib/server/db';
 import { clientIp, HttpError, rateLimit, readJson, route } from '@/lib/server/http';
-import { calculateDeposit, createCheckoutSession, isStripeConfigured } from '@/lib/server/stripe';
+import { calculateDeposit, createCheckoutSession, isPayPalConfigured } from '@/lib/server/paypal';
 
 export const GET = route(async () => {
   const user = await requireUser('customer');
@@ -33,16 +33,13 @@ export const POST = route(async (req) => {
   const ref = createBooking(customerId, draft, key, depositAmount);
 
   let checkoutUrl: string | null = null;
-  if (isStripeConfigured()) {
-    const customer = getDb().prepare('SELECT name, email FROM users WHERE id = ?').get(customerId) as { name: string; email: string };
+  if (isPayPalConfigured()) {
     const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://hoodie.services';
     checkoutUrl = await createCheckoutSession({
       bookingRef: ref,
       serviceTitle: draft.serviceTitle,
       totalAmount: draft.total,
       depositAmount,
-      customerEmail: customer.email,
-      customerName: customer.name,
       date: draft.date,
       origin,
     });
@@ -55,6 +52,6 @@ export const POST = route(async (req) => {
     balanceAmount,
     depositPercentage,
     isFullPayment,
-    stripeEnabled: Boolean(checkoutUrl),
+    paymentsEnabled: Boolean(checkoutUrl),
   }, { status: 201 });
 });

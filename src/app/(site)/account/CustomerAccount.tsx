@@ -16,7 +16,8 @@ export function CustomerAccount() {
   const router = useRouter();
   const params = useSearchParams();
   const justBooked = params.get('booked');
-  const sessionId = params.get('session_id');
+  const paid = params.get('paid');
+  const payment = params.get('payment');
   const [me, setMe] = useState<MeResponse['user']>(null);
   const [bookings, setBookings] = useState<BookingView[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -73,12 +74,22 @@ export function CustomerAccount() {
         </div>
       </div>
 
-      {sessionId && (
+      {payment === 'cancelled' && (
+        <Alert tone="error" title="Payment not completed" className="mt-8">
+          Your booking is saved but the deposit hasn&apos;t been paid yet. Use &quot;Pay deposit&quot; below to complete it with PayPal.
+        </Alert>
+      )}
+      {payment === 'failed' && (
+        <Alert tone="error" title="We couldn't confirm your payment" className="mt-8">
+          If PayPal charged you, it will be matched to your booking automatically within a few minutes. Otherwise, use &quot;Pay deposit&quot; below to try again.
+        </Alert>
+      )}
+      {paid && (
         <Alert tone="success" title="Payment successful! Your deposit has been received." className="mt-8">
           Your booking is confirmed and secured. We look forward to seeing you!
         </Alert>
       )}
-      {confirmed && !sessionId && (
+      {confirmed && !paid && !payment && (
         <Alert tone="success" title="Your booking is confirmed. Thank you!" className="mt-8">
           Your reference is <strong>{confirmed.ref}</strong>. We will see you on {formatDateLong(confirmed.date)} at {formatTimeRange(confirmed.startMin, confirmed.durationMin).split(' – ')[0]}.
         </Alert>

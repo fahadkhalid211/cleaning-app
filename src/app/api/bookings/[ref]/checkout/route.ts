@@ -3,12 +3,12 @@ import { requireUser } from '@/lib/server/auth';
 import { getForCustomer } from '@/lib/server/bookings';
 import { getDb } from '@/lib/server/db';
 import { HttpError, route } from '@/lib/server/http';
-import { calculateDeposit, createCheckoutSession, isStripeConfigured } from '@/lib/server/stripe';
+import { calculateDeposit, createCheckoutSession, isPayPalConfigured } from '@/lib/server/paypal';
 
 type Ctx = { params: Promise<{ ref: string }> };
 
 export const POST = route<Ctx>(async (req, { params }) => {
-  if (!isStripeConfigured()) {
+  if (!isPayPalConfigured()) {
     throw new HttpError(503, 'Payment processor is not configured.');
   }
 
@@ -29,8 +29,6 @@ export const POST = route<Ctx>(async (req, { params }) => {
     serviceTitle: booking.serviceTitle,
     totalAmount: booking.total,
     depositAmount,
-    customerEmail: user.email,
-    customerName: user.name,
     date: booking.date,
     origin,
   });

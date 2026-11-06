@@ -84,8 +84,8 @@ CREATE TABLE IF NOT EXISTS bookings (
   total         REAL NOT NULL,
   deposit_amount REAL NOT NULL DEFAULT 0,
   payment_status TEXT NOT NULL DEFAULT 'unpaid',
-  stripe_session_id TEXT,
-  stripe_payment_intent_id TEXT,
+  paypal_order_id TEXT,
+  paypal_capture_id TEXT,
   request_key   TEXT,
   created_at    TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
@@ -117,11 +117,11 @@ function migrate(db: DatabaseSync) {
     if (!colNames.has('payment_status')) {
       db.exec("ALTER TABLE bookings ADD COLUMN payment_status TEXT NOT NULL DEFAULT 'unpaid';");
     }
-    if (!colNames.has('stripe_session_id')) {
-      db.exec('ALTER TABLE bookings ADD COLUMN stripe_session_id TEXT;');
+    if (!colNames.has('paypal_order_id')) {
+      db.exec('ALTER TABLE bookings ADD COLUMN paypal_order_id TEXT;');
     }
-    if (!colNames.has('stripe_payment_intent_id')) {
-      db.exec('ALTER TABLE bookings ADD COLUMN stripe_payment_intent_id TEXT;');
+    if (!colNames.has('paypal_capture_id')) {
+      db.exec('ALTER TABLE bookings ADD COLUMN paypal_capture_id TEXT;');
     }
   } catch (e) {
     console.warn('[db] Migration notice:', e);

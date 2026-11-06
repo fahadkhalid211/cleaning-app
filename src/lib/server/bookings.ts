@@ -178,8 +178,7 @@ interface BookingRow {
   total: number;
   deposit_amount?: number;
   payment_status?: string;
-  stripe_session_id?: string | null;
-  stripe_payment_intent_id?: string | null;
+  paypal_order_id?: string | null;
   created_at: string;
   cleaner_name: string;
   cleaner_phone: string;
@@ -230,7 +229,7 @@ function toView(r: BookingRow, audience: Audience): BookingView {
     total: r.total,
     depositAmount: r.deposit_amount ?? 0,
     paymentStatus: (r.payment_status as BookingView['paymentStatus']) ?? 'unpaid',
-    stripeSessionId: r.stripe_session_id ?? null,
+    paypalOrderId: r.paypal_order_id ?? null,
     createdAt: r.created_at,
     canChange: audience === 'customer' ? changeable(r) : false,
     cleaner: { id: r.cleaner_id, name: audience === 'customer' ? r.cleaner_name.split(' ')[0] : r.cleaner_name },

@@ -53,7 +53,7 @@ export interface Catalog {
   services: Service[];
   addons: Addon[];
   depositPercent?: number;
-  stripeEnabled?: boolean;
+  paymentsEnabled?: boolean;
 }
 
 export interface Slot {
@@ -84,7 +84,7 @@ export interface BookingView {
   total: number;
   depositAmount?: number;
   paymentStatus?: PaymentStatus;
-  stripeSessionId?: string | null;
+  paypalOrderId?: string | null;
   createdAt: string;
   canChange: boolean;
   cleaner: { id: number; name: string; phone?: string } | null;
