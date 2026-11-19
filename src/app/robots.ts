@@ -1,12 +1,16 @@
 import type { MetadataRoute } from 'next';
+import { BRAND } from '@/lib/config';
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = BRAND.url.replace(/\/+$/, '');
+
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
-      disallow: ['/admin/', '/cleaner/', '/api/'],
+      allow: ['/', '/cleaner/login', '/cleaner/signup'],
+      disallow: ['/admin/', '/api/', '/account', '/cleaner/jobs'],
     },
-    sitemap: 'https://hoodie.services/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
+
