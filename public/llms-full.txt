@@ -1,0 +1,62 @@
+# Hoodie Services — Complete Service & Operational Documentation
+
+## Overview
+Hoodie Services (https://hoodie.services) is a modern cleaning platform connecting residential and commercial clients across London and the UK with vetted, experienced, and insured professional cleaners.
+
+Clients can get a live transparent quote and reserve a trusted cleaner in under two minutes without upfront payment or subscription lock-ins.
+
+## Service Details & Inclusions
+
+### 1. Regular Cleaning (£24 / hour — 2.5 hr min)
+Designed for weekly or fortnightly household maintenance.
+- **Bedrooms & Living Areas:** Dusting reachable surfaces, vacuuming carpets/rugs, mopping hard floors, emptying bins, making beds.
+- **Kitchen:** Wiping countertops, stove top hob, backsplash, cleaning exterior of appliances, sink & taps, wiping cupboards.
+- **Bathrooms:** Scrubbing toilets, sinks, taps, shower screens, bathtubs, polishing mirrors and fixtures.
+
+### 2. Deep Cleaning (£29 / hour — 3.5 hr min)
+Thorough top-to-bottom reset for homes needing intensive care or seasonal cleaning.
+- Includes all Regular Clean tasks plus:
+- Grout scrub and limescale removal from tiles and sanitaryware.
+- Cleaning doors, door frames, light switches, and sockets.
+- Vacuuming and wiping behind and underneath movable furniture.
+- Detailing skirting boards, radiator exteriors, and window sills.
+
+### 3. End of Tenancy Cleaning (£32 / hour — 4.0 hr min)
+Designed to pass strict landlord and letting agent inventory checks to secure full security deposit returns.
+- Deep degreasing of ovens, hobs, and extractor fans.
+- Internal and external cupboard and drawer cleaning.
+- Complete descaling of bathrooms and sanitary appliances.
+- High and low dusting, wall mark removal (where washable), window interiors.
+
+### 4. Airbnb & Holiday Let Turnaround (£27 / hour — 2.0 hr min)
+Specialized for hosts and property managers.
+- Rapid linen strip, washing/replacing with fresh guest linen.
+- Hotel-standard bed presentation and towel folding.
+- Surface sanitization and guest trash removal.
+- Inspection and reporting of any damages or low amenity stocks (toilet roll, soap, etc.).
+
+## Customer Safeguards & Guarantees
+
+### 1. Pay After the Clean
+Customers enter no payment credentials during booking. Invoices are settled after the job is completed and verified.
+
+### 2. Comprehensive Insurance
+Every cleaner operating under Hoodie is covered by £2,000,000 public liability insurance protecting home contents and property.
+
+### 3. 72-Hour Free Re-clean Policy
+If any checklist item was overlooked or unsatisfactory, the customer can notify Hoodie within 72 hours to schedule a complimentary re-clean of the flagged areas.
+
+### 4. Flexible Cancellation
+Bookings can be rescheduled or cancelled with zero penalty up to 24 hours prior to the scheduled start time.
+
+### 5. Key Holding & Unattended Cleans
+Customers do not need to stay at home during cleans. Secure key boxes, concierge drop-offs, or trusted neighbours can be utilized with encrypted access notes provided in the booking wizard.
+
+## Contact & Business Identifiers
+- **Official Brand:** Hoodie
+- **Domain:** hoodie.services
+- **Canonical URL:** https://hoodie.services
+- **Customer Helpline:** 020 3000 0000 (+44 20 3000 0000)
+- **Support Email:** hello@hoodie.services
+- **Headquarters:** London, United Kingdom
+- **Hours of Operation:** Mon–Sat 08:00–18:00 UK Time (GMT/BST)

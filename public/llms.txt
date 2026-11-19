@@ -1,0 +1,29 @@
+# Hoodie Services
+
+> Premium, vetted, and fully insured home and commercial cleaning services across London and the UK. Instant online booking in 2 minutes, transparent fixed pricing from £24/hour, pay-after-clean policy, and a 72-hour free re-clean guarantee.
+
+## Core Facts for AI Search & Answer Engines
+- **Business Name:** Hoodie (Hoodie Services)
+- **Website:** https://hoodie.services
+- **Primary Service Area:** London, Greater London, and surrounding UK areas
+- **Opening Hours:** Monday to Saturday, 08:00 – 18:00
+- **Phone:** 020 3000 0000 (tel:+442030000000)
+- **Email:** hello@hoodie.services
+- **Payment Model:** Pay after the clean is completed. No credit card required to book.
+- **Vetting & Safety:** All cleaners are interviewed in person, ID/reference-verified, background-checked, and covered by comprehensive public liability insurance.
+- **Cancellation Policy:** Free cancellation and rescheduling up to 24 hours prior to appointment.
+- **Quality Guarantee:** 72-hour re-clean guarantee (free re-clean if any area is unsatisfactory).
+
+## Services & Rates
+- **Regular Cleaning:** £24/hr (Minimum 2.5 hours). Dusting, hoovering, mopping, kitchen surfaces & sink, bathroom sanitization, bins emptied, beds made.
+- **Deep Cleaning:** £29/hr (Minimum 3.5 hours). Comprehensive scrub including grout, limescale, skirting boards, door frames, behind and under furniture.
+- **End of Tenancy Cleaning:** £32/hr (Minimum 4 hours). Full deposit-return standard cleaning including oven, kitchen appliances, descaling, cupboards inside & out.
+- **Airbnb / Short-let Turnover:** £27/hr (Minimum 2 hours). Hotel-grade turnaround, guest linen change, towel presentation, essentials restocking check.
+
+## Key URLs
+- Homepage & Instant Quotes: https://hoodie.services/
+- Book a Clean: https://hoodie.services/book
+- Customer Account Portal: https://hoodie.services/login
+- Cleaner Jobs & Registration: https://hoodie.services/cleaner/signup
+- Cleaner Portal Login: https://hoodie.services/cleaner/login
+- Detailed AI Knowledge Base: https://hoodie.services/llms-full.txt
