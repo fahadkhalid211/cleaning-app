@@ -226,7 +226,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_1_top',
     roomId: 'room_pod_8',
-    bedNumber: 'P1-Upper',
+    bedNumber: 'P1-U',
     tier: 'top',
     bunkGroup: 'Pod Unit 1',
     positionCol: 1,
@@ -239,7 +239,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_1_bottom',
     roomId: 'room_pod_8',
-    bedNumber: 'P1-Lower',
+    bedNumber: 'P1-L',
     tier: 'bottom',
     bunkGroup: 'Pod Unit 1',
     positionCol: 1,
@@ -252,7 +252,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_2_top',
     roomId: 'room_pod_8',
-    bedNumber: 'P2-Upper',
+    bedNumber: 'P2-U',
     tier: 'top',
     bunkGroup: 'Pod Unit 2',
     positionCol: 2,
@@ -265,7 +265,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_2_bottom',
     roomId: 'room_pod_8',
-    bedNumber: 'P2-Lower',
+    bedNumber: 'P2-L',
     tier: 'bottom',
     bunkGroup: 'Pod Unit 2',
     positionCol: 2,
@@ -278,7 +278,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_3_top',
     roomId: 'room_pod_8',
-    bedNumber: 'P3-Upper',
+    bedNumber: 'P3-U',
     tier: 'top',
     bunkGroup: 'Pod Unit 3',
     positionCol: 3,
@@ -291,7 +291,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_3_bottom',
     roomId: 'room_pod_8',
-    bedNumber: 'P3-Lower',
+    bedNumber: 'P3-L',
     tier: 'bottom',
     bunkGroup: 'Pod Unit 3',
     positionCol: 3,
@@ -304,7 +304,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_4_top',
     roomId: 'room_pod_8',
-    bedNumber: 'P4-Upper',
+    bedNumber: 'P4-U',
     tier: 'top',
     bunkGroup: 'Pod Unit 4',
     positionCol: 4,
@@ -317,7 +317,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
   {
     id: 'bed_301_4_bottom',
     roomId: 'room_pod_8',
-    bedNumber: 'P4-Lower',
+    bedNumber: 'P4-L',
     tier: 'bottom',
     bunkGroup: 'Pod Unit 4',
     positionCol: 4,
@@ -325,7 +325,7 @@ export const HOSTEL_BEDS_SEED: HostelBed[] = [
     hasWindowView: true,
     hasExtraStorage: true,
     pricePerNight: 37,
-    features: ['Quiet Corner Lower Capsule', 'Full Soundproof Isolation', 'Under-pod Large Drawer', 'Pod Locker #P4-L'],
+    features: ['Quiet Corner Lower Capsule', 'Ground Level Easy Access', 'Acoustic Door', 'Pod Locker #P4-L'],
   },
 
   // Room 4: Westminster Male Dorm (4 Beds in 2 Bunks)

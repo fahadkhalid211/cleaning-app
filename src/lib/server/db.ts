@@ -286,6 +286,9 @@ function seed(db: DatabaseSync) {
       );
     });
     console.log(`[db] Seeded ${HOSTEL_ROOMS_SEED.length} hostel rooms & ${HOSTEL_BEDS_SEED.length} bunk beds`);
+  } else {
+    // Ensure clean compact bed codes for existing databases
+    db.exec("UPDATE hostel_beds SET bed_number = REPLACE(REPLACE(bed_number, '-Upper', '-U'), '-Lower', '-L') WHERE bed_number LIKE '%-Upper' OR bed_number LIKE '%-Lower'");
   }
 }
 

@@ -19,6 +19,14 @@ import type { HostelAddon, HostelBed, HostelRoom, MeResponse } from '@/lib/types
 import { BunkBedMap } from './BunkBedMap';
 import { Alert, Button, Card, Spinner } from '@/components/ui';
 
+function formatBedBadge(bedNumber: string): string {
+  return bedNumber
+    .replace(/-Upper$/i, '-U')
+    .replace(/-Lower$/i, '-L')
+    .replace(/-top$/i, '-U')
+    .replace(/-bottom$/i, '-L');
+}
+
 export function HostelBookingWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -229,41 +237,41 @@ export function HostelBookingWizard() {
         </div>
 
         {/* Date Selector Strip */}
-        <div className="flex flex-wrap items-center gap-3 bg-soft p-2.5 rounded-2xl border border-line">
-          <div>
-            <label className="block text-[11px] font-bold text-muted uppercase">Check-in</label>
-            <input
-              type="date"
-              value={checkIn}
-              min={new Date().toISOString().split('T')[0]}
-              onChange={(e) => {
-                setCheckIn(e.target.value);
-                // Ensure checkOut is at least 1 day after checkIn
-                if (new Date(e.target.value) >= new Date(checkOut)) {
-                  const nxt = new Date(e.target.value);
-                  nxt.setDate(nxt.getDate() + 1);
-                  setCheckOut(nxt.toISOString().split('T')[0]);
-                }
-              }}
-              className="bg-white border border-line rounded-lg px-2.5 py-1 text-xs font-semibold text-ink"
-            />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 bg-soft p-2.5 sm:p-3 rounded-2xl border border-line">
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
+            <div>
+              <label className="block text-[10px] font-bold text-muted uppercase">Check-in</label>
+              <input
+                type="date"
+                value={checkIn}
+                min={new Date().toISOString().split('T')[0]}
+                onChange={(e) => {
+                  setCheckIn(e.target.value);
+                  if (new Date(e.target.value) >= new Date(checkOut)) {
+                    const nxt = new Date(e.target.value);
+                    nxt.setDate(nxt.getDate() + 1);
+                    setCheckOut(nxt.toISOString().split('T')[0]);
+                  }
+                }}
+                className="w-full bg-white border border-line rounded-lg px-2.5 py-1.5 text-xs font-semibold text-ink"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-muted uppercase">Check-out</label>
+              <input
+                type="date"
+                value={checkOut}
+                min={checkIn}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="w-full bg-white border border-line rounded-lg px-2.5 py-1.5 text-xs font-semibold text-ink"
+              />
+            </div>
           </div>
 
-          <div className="text-muted font-bold text-sm">→</div>
-
-          <div>
-            <label className="block text-[11px] font-bold text-muted uppercase">Check-out</label>
-            <input
-              type="date"
-              value={checkOut}
-              min={checkIn}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="bg-white border border-line rounded-lg px-2.5 py-1 text-xs font-semibold text-ink"
-            />
-          </div>
-
-          <div className="pl-2 border-l border-line text-xs font-bold text-brand-strong">
-            {nights} {nights === 1 ? 'Night' : 'Nights'}
+          <div className="flex items-center justify-between sm:justify-start gap-2 pt-2 sm:pt-0 sm:pl-3 border-t sm:border-t-0 sm:border-l border-line text-xs font-bold text-brand-strong">
+            <span className="sm:hidden text-muted font-normal">Duration:</span>
+            <span>{nights} {nights === 1 ? 'Night' : 'Nights'}</span>
           </div>
         </div>
       </div>
@@ -336,8 +344,8 @@ export function HostelBookingWizard() {
                     </div>
                     <div className="flex justify-between font-semibold">
                       <span className="text-muted">Bed Choice</span>
-                      <span className="text-brand-strong font-black">
-                        Bed {selectedBed.bedNumber} ({selectedBed.tier === 'top' ? 'Upper' : 'Lower'})
+                      <span className="text-brand-strong font-bold">
+                        Bed {formatBedBadge(selectedBed.bedNumber)} ({selectedBed.tier === 'top' ? 'Upper Bunk' : 'Lower Bunk'})
                       </span>
                     </div>
                     <div className="flex justify-between font-semibold">
@@ -569,6 +577,32 @@ export function HostelBookingWizard() {
               <ShieldCheck className="size-4 text-emerald-600" /> Free cancellation up to 24 hours prior to check-in.
             </p>
           </div>
+        </div>
+      )}
+
+      {/* Mobile Sticky Selection Bar */}
+      {selectedBed && currentRoom && step === 'bed' && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-line p-3.5 shadow-pop flex items-center justify-between gap-3">
+          <div className="min-w-0 flex-1 truncate">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-ink">
+              <span className="text-brand-strong">Bed {formatBedBadge(selectedBed.bedNumber)}</span>
+              <span>·</span>
+              <span className="text-emerald-700">{formatMoney(grandTotal)}</span>
+            </div>
+            <p className="text-[11px] text-muted truncate">
+              {currentRoom.name} · {nights} {nights === 1 ? 'night' : 'nights'}
+            </p>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => {
+              setStep('details');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="shrink-0 font-bold"
+          >
+            Continue <ChevronRight className="size-4" />
+          </Button>
         </div>
       )}
     </div>
