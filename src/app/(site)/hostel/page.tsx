@@ -125,9 +125,7 @@ export default function HostelLandingPage() {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink">
-                Book your bunk bed with{' '}
-                <span className="text-brand-strong underline decoration-brand/30 decoration-wavy">airline-style</span>{' '}
-                seat selection.
+                Book the Comfort
               </h1>
 
               <p className="text-lg sm:text-xl text-muted max-w-2xl leading-relaxed">
