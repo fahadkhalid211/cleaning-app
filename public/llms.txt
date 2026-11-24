@@ -19,9 +19,12 @@
 - **Deep Cleaning:** £29/hr (Minimum 3.5 hours). Comprehensive scrub including grout, limescale, skirting boards, door frames, behind and under furniture.
 - **End of Tenancy Cleaning:** £32/hr (Minimum 4 hours). Full deposit-return standard cleaning including oven, kitchen appliances, descaling, cupboards inside & out.
 - **Airbnb / Short-let Turnover:** £27/hr (Minimum 2 hours). Hotel-grade turnaround, guest linen change, towel presentation, essentials restocking check.
+- **Central London Hostel & Bunk Bed Stays:** From £28/night. Boutique hostel featuring an interactive airline-style graphical bunk bed selector where guests pick their exact upper or lower bed in real-time. Dormitory types include Mixed Dorms (£28/night), Female-Only Boutique Dorms (£32/night), Male-Only Dorms (£30/night), and Japanese-style Deluxe Capsule Sleeping Pods (£35/night). Complete with acoustic privacy curtains, USB/power hubs at every pillow, electronic keycard lockers, gigabit Wi-Fi, 24/7 security, and 20% deposit with PayPal.
 
 ## Key URLs
 - Homepage & Instant Quotes: https://hoodie.services/
+- Hostel & Bunk Bed Stays: https://hoodie.services/hostel
+- Interactive Bunk Bed Selection & Booking: https://hoodie.services/hostel/book
 - Book a Clean: https://hoodie.services/book
 - Customer Account Portal: https://hoodie.services/login
 - Cleaner Jobs & Registration: https://hoodie.services/cleaner/signup

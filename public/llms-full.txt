@@ -35,6 +35,15 @@ Specialized for hosts and property managers.
 - Surface sanitization and guest trash removal.
 - Inspection and reporting of any damages or low amenity stocks (toilet roll, soap, etc.).
 
+### 5. Central London Hostel & Bunk Bed Stays (From £28 / night)
+Designer boutique dormitory and capsule pod accommodation in Central London.
+- **Airline-Style Seat Selection for Beds:** Interactive graphical floorplan showing real-time bed availability. Guests choose upper or lower tiers, window locations, and quiet corners before arriving.
+- **Thames Mixed Dorm (6 Beds):** From £28/night. Ensuite shower, solid timber bunks, blackout curtains, personal lamp, USB & 230V plugs, keycard lockers.
+- **Covent Garden Female Dorm (4 Beds):** From £32/night. Female-only keycard floor, ensuite marble bath, vanity mirrors, hair dryers, complimentary sleep amenities.
+- **Soho Deluxe Capsule Pod Dorm (8 Pods):** From £35/night. Japanese-style acoustic soundproof capsule pods with sliding privacy doors, climate airflow, memory foam mattresses.
+- **Westminster Male Dorm (4 Beds):** From £30/night. Robust steel bunks, acoustic curtains, courtyard quiet facing, individual steel lockers.
+- **Payment & Guarantee:** 20% deposit via PayPal; balance due on arrival. Same customer account dashboard for managing cleaning and hostel bookings. Direct URL: https://hoodie.services/hostel/book
+
 ## Customer Safeguards & Guarantees
 
 ### 1. Pay After the Clean

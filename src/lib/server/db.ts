@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { ADDON_SEED, SERVICE_SEED } from '@/lib/catalog-seed';
+import { HOSTEL_BEDS_SEED, HOSTEL_ROOMS_SEED } from '@/lib/hostel-seed';
 import { hashPassword } from './passwords';
 
 // One SQLite file. In production it lives OUTSIDE the deployed folder by default,
@@ -105,6 +106,66 @@ CREATE TABLE IF NOT EXISTS audit_log (
   action   TEXT NOT NULL,
   details  TEXT NOT NULL DEFAULT ''
 );
+
+CREATE TABLE IF NOT EXISTS hostel_rooms (
+  id               TEXT PRIMARY KEY,
+  name             TEXT NOT NULL,
+  slug             TEXT NOT NULL UNIQUE,
+  type             TEXT NOT NULL CHECK (type IN ('mixed','female','male','deluxe')),
+  floor            INTEGER NOT NULL DEFAULT 1,
+  capacity         INTEGER NOT NULL,
+  base_price_night REAL NOT NULL CHECK (base_price_night > 0),
+  description      TEXT NOT NULL,
+  features_json    TEXT NOT NULL DEFAULT '[]',
+  active           INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS hostel_beds (
+  id                 TEXT PRIMARY KEY,
+  room_id            TEXT NOT NULL REFERENCES hostel_rooms(id) ON DELETE CASCADE,
+  bed_number         TEXT NOT NULL,
+  tier               TEXT NOT NULL CHECK (tier IN ('top','bottom')),
+  bunk_group         TEXT NOT NULL,
+  position_col       INTEGER NOT NULL DEFAULT 1,
+  position_row       INTEGER NOT NULL DEFAULT 1,
+  has_window_view    INTEGER NOT NULL DEFAULT 0,
+  has_extra_storage  INTEGER NOT NULL DEFAULT 0,
+  price_per_night    REAL NOT NULL CHECK (price_per_night > 0),
+  features_json      TEXT NOT NULL DEFAULT '[]',
+  active             INTEGER NOT NULL DEFAULT 1
+);
+CREATE INDEX IF NOT EXISTS ix_hostel_beds_room ON hostel_beds(room_id);
+
+CREATE TABLE IF NOT EXISTS hostel_bookings (
+  id                INTEGER PRIMARY KEY,
+  ref               TEXT NOT NULL UNIQUE,
+  customer_id       INTEGER NOT NULL REFERENCES users(id),
+  room_id           TEXT NOT NULL REFERENCES hostel_rooms(id),
+  bed_id            TEXT NOT NULL REFERENCES hostel_beds(id),
+  room_name         TEXT NOT NULL,
+  bed_label         TEXT NOT NULL,
+  check_in          TEXT NOT NULL,
+  check_out         TEXT NOT NULL,
+  nights            INTEGER NOT NULL CHECK (nights >= 1),
+  guest_name        TEXT NOT NULL,
+  guest_email       TEXT NOT NULL,
+  guest_phone       TEXT NOT NULL,
+  guest_gender      TEXT NOT NULL DEFAULT 'unspecified',
+  eta               TEXT NOT NULL DEFAULT '14:00 - 18:00',
+  special_requests  TEXT NOT NULL DEFAULT '',
+  addons_json       TEXT NOT NULL DEFAULT '[]',
+  subtotal          REAL NOT NULL,
+  total             REAL NOT NULL,
+  deposit_amount    REAL NOT NULL DEFAULT 0,
+  payment_status    TEXT NOT NULL DEFAULT 'unpaid',
+  status            TEXT NOT NULL DEFAULT 'confirmed' CHECK (status IN ('confirmed','checked_in','checked_out','cancelled')),
+  paypal_order_id   TEXT,
+  paypal_capture_id TEXT,
+  created_at        TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at        TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS ix_hostel_bookings_bed ON hostel_bookings(bed_id, check_in, check_out, status);
+CREATE INDEX IF NOT EXISTS ix_hostel_bookings_customer ON hostel_bookings(customer_id);
 `;
 
 function migrate(db: DatabaseSync) {
@@ -192,6 +253,39 @@ function seed(db: DatabaseSync) {
     ins.run('Maria Santos', 'maria@cleaners.test', '07700 900001', hash);
     ins.run('James Okafor', 'james@cleaners.test', '07700 900002', hash);
     console.log('[db] Seeded 2 demo cleaners');
+  }
+
+  // Seed Hostel Rooms & Bunk Beds
+  const roomCount = db.prepare('SELECT COUNT(*) AS n FROM hostel_rooms').get() as { n: number };
+  if (roomCount.n === 0) {
+    const insRoom = db.prepare(
+      `INSERT INTO hostel_rooms (id, name, slug, type, floor, capacity, base_price_night, description, features_json)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    HOSTEL_ROOMS_SEED.forEach((r) => {
+      insRoom.run(r.id, r.name, r.slug, r.type, r.floor, r.capacity, r.basePriceNight, r.description, JSON.stringify(r.features));
+    });
+
+    const insBed = db.prepare(
+      `INSERT INTO hostel_beds (id, room_id, bed_number, tier, bunk_group, position_col, position_row, has_window_view, has_extra_storage, price_per_night, features_json)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    HOSTEL_BEDS_SEED.forEach((b) => {
+      insBed.run(
+        b.id,
+        b.roomId,
+        b.bedNumber,
+        b.tier,
+        b.bunkGroup,
+        b.positionCol,
+        b.positionRow,
+        b.hasWindowView ? 1 : 0,
+        b.hasExtraStorage ? 1 : 0,
+        b.pricePerNight,
+        JSON.stringify(b.features),
+      );
+    });
+    console.log(`[db] Seeded ${HOSTEL_ROOMS_SEED.length} hostel rooms & ${HOSTEL_BEDS_SEED.length} bunk beds`);
   }
 }
 

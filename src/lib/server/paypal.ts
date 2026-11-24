@@ -119,8 +119,9 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
   const approve = order.links?.find((l) => l.rel === 'payer-action' || l.rel === 'approve')?.href ?? null;
   if (!approve) throw new Error('PayPal order has no approval link.');
 
+  const table = bookingRef.startsWith('HDH-') ? 'hostel_bookings' : 'bookings';
   getDb()
-    .prepare("UPDATE bookings SET paypal_order_id = ?, updated_at = datetime('now') WHERE ref = ?")
+    .prepare(`UPDATE ${table} SET paypal_order_id = ?, updated_at = datetime('now') WHERE ref = ?`)
     .run(order.id, bookingRef);
   return approve;
 }
@@ -128,15 +129,16 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
 /** Marks a booking paid. Idempotent: only moves unpaid bookings forward. */
 export function recordPayment(ref: string, amount: number, orderId: string | null, captureId: string | null, via: string): boolean {
   const db = getDb();
+  const table = ref.startsWith('HDH-') ? 'hostel_bookings' : 'bookings';
   const row = db
-    .prepare('SELECT total, payment_status FROM bookings WHERE ref = ?')
+    .prepare(`SELECT total, payment_status FROM ${table} WHERE ref = ?`)
     .get(ref) as { total: number; payment_status: string } | undefined;
   if (!row) return false;
   if (row.payment_status === 'paid' || row.payment_status === 'deposit_paid') return true;
 
   const status = amount + 0.005 >= row.total ? 'paid' : 'deposit_paid';
   db.prepare(
-    `UPDATE bookings
+    `UPDATE ${table}
      SET payment_status = ?, deposit_amount = ?, paypal_order_id = COALESCE(?, paypal_order_id),
          paypal_capture_id = ?, updated_at = datetime('now')
      WHERE ref = ?`,
@@ -148,8 +150,9 @@ export function recordPayment(ref: string, amount: number, orderId: string | nul
 /** Captures an approved order and records the payment. Returns true if the booking is now paid. */
 export async function captureOrder(orderId: string, ref: string): Promise<boolean> {
   const db = getDb();
+  const table = ref.startsWith('HDH-') ? 'hostel_bookings' : 'bookings';
   const row = db
-    .prepare('SELECT total, deposit_amount, paypal_order_id FROM bookings WHERE ref = ?')
+    .prepare(`SELECT total, deposit_amount, paypal_order_id FROM ${table} WHERE ref = ?`)
     .get(ref) as { total: number; deposit_amount: number; paypal_order_id: string | null } | undefined;
   // The order must be the one we created for this exact booking.
   if (!row || row.paypal_order_id !== orderId) return false;

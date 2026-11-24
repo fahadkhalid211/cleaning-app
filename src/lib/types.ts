@@ -94,3 +94,74 @@ export interface BookingView {
 export interface MeResponse {
   user: { id: number; role: 'customer' | 'cleaner' | 'admin'; name: string; email: string; phone: string } | null;
 }
+
+// ---------------------------------------------------------------------------
+// Hostel Booking System Types
+// ---------------------------------------------------------------------------
+
+export type HostelRoomType = 'mixed' | 'female' | 'male' | 'deluxe';
+export type BunkTier = 'top' | 'bottom';
+export type HostelBookingStatus = 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled';
+
+export interface HostelRoom {
+  id: string;
+  name: string;
+  slug: string;
+  type: HostelRoomType;
+  floor: number;
+  capacity: number;
+  basePriceNight: number;
+  features: string[];
+  description: string;
+}
+
+export interface HostelBed {
+  id: string;
+  roomId: string;
+  bedNumber: string;
+  tier: BunkTier;
+  bunkGroup: string;
+  positionCol: number;
+  positionRow: number;
+  hasWindowView: boolean;
+  hasExtraStorage: boolean;
+  pricePerNight: number;
+  features: string[];
+  isAvailable?: boolean;
+}
+
+export interface HostelAddon {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  perNight?: boolean;
+}
+
+export interface HostelBookingView {
+  ref: string;
+  roomId: string;
+  roomName: string;
+  roomType: HostelRoomType;
+  bedId: string;
+  bedLabel: string;
+  tier: BunkTier;
+  checkIn: string;
+  checkOut: string;
+  nights: number;
+  guestName: string;
+  guestEmail: string;
+  guestPhone: string;
+  guestGender?: string;
+  eta?: string;
+  specialRequests?: string;
+  subtotal: number;
+  addons: { id: string; name: string; price: number }[];
+  total: number;
+  depositAmount: number;
+  paymentStatus: PaymentStatus;
+  status: HostelBookingStatus;
+  paypalOrderId?: string | null;
+  createdAt: string;
+}
+

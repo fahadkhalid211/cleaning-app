@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Clock, Menu, Phone, User, X } from 'lucide-react';
+import { Bed, ChevronDown, Clock, Menu, Phone, User, X } from 'lucide-react';
 import { BRAND } from '@/lib/config';
 import { SERVICE_SEED } from '@/lib/catalog-seed';
 import type { MeResponse } from '@/lib/types';
@@ -54,6 +54,9 @@ export function SiteHeader() {
               <Link href="/#business" className="rounded-full px-3 py-0.5 text-white/80 hover:text-white text-xs">
                 For businesses
               </Link>
+              <Link href="/hostel" className="rounded-full bg-brand/80 px-3 py-0.5 text-white hover:bg-brand text-xs font-semibold">
+                Hostel & Bunks
+              </Link>
             </nav>
             <div className="flex items-center gap-6 text-white/85 text-xs sm:text-[0.85rem]">
               <span className="inline-flex items-center gap-1.5">
@@ -88,6 +91,16 @@ export function SiteHeader() {
                 </ul>
               </div>
             </div>
+            <Link
+              href="/hostel"
+              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 hover:bg-soft text-brand-strong font-semibold"
+            >
+              <Bed className="size-4" aria-hidden />
+              <span>Hostel</span>
+              <span className="rounded-full bg-brand-light px-1.5 py-0.2 text-[10px] font-extrabold text-brand-strong uppercase">
+                New
+              </span>
+            </Link>
             <Link href="/#how-it-works" className="rounded-full px-4 py-2 hover:bg-soft">
               How it works
             </Link>
@@ -155,6 +168,9 @@ export function SiteHeader() {
                 <ButtonLink href="/book" size="lg">
                   Book a clean
                 </ButtonLink>
+                <ButtonLink href="/hostel/book" size="lg" variant="secondary" className="!text-brand-strong border-brand/30">
+                  <Bed className="size-5" aria-hidden /> Book a bunk bed
+                </ButtonLink>
                 <ButtonLink href={accountHref} size="lg" variant="secondary">
                   <User className="size-5" aria-hidden /> {accountLabel}
                 </ButtonLink>
@@ -172,6 +188,16 @@ export function SiteHeader() {
                 </ul>
               </div>
               <ul className="divide-y divide-line border-t border-line">
+                <li>
+                  <Link href="/hostel" className="flex items-center justify-between py-4 text-lg font-semibold text-brand-strong">
+                    <span className="flex items-center gap-2">
+                      <Bed className="size-5" /> Hostel & Bunk Bed Stays
+                    </span>
+                    <span className="rounded-full bg-brand-light px-2 py-0.5 text-xs font-bold text-brand-strong">
+                      New
+                    </span>
+                  </Link>
+                </li>
                 <li>
                   <Link href="/#how-it-works" className="block py-4 text-lg font-medium">
                     How it works

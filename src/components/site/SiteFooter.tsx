@@ -22,6 +22,8 @@ export function SiteFooter() {
         </div>
 
         <FooterCol title="Services">
+          <FooterLink href="/hostel">Hostel & Bunk Beds</FooterLink>
+          <FooterLink href="/hostel/book">Live Bunk Selector</FooterLink>
           {SERVICE_SEED.map((s) => (
             <FooterLink key={s.id} href={`/book?service=${s.id}`}>
               {s.title}
