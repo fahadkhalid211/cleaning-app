@@ -93,12 +93,13 @@ export interface CreateCheckoutParams {
   depositAmount: number;
   date: string;
   origin: string;
+  locale?: string;
 }
 
 /** Creates a PayPal order and returns the URL the customer must approve it at. */
 export async function createCheckoutSession(params: CreateCheckoutParams): Promise<string | null> {
   if (!isPayPalConfigured()) return null;
-  const { bookingRef, serviceTitle, totalAmount, depositAmount, date, origin } = params;
+  const { bookingRef, serviceTitle, totalAmount, depositAmount, date, origin, locale } = params;
 
   const isFull = depositAmount >= totalAmount;
   const description = (isFull
@@ -107,6 +108,8 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
   ).slice(0, 127);
 
   console.log(`[paypal] Creating order for ${bookingRef} on ${baseUrl()} (mode: ${isPayPalLive() ? 'LIVE' : 'SANDBOX'})...`);
+
+  const returnLocaleParam = locale ? `&locale=${encodeURIComponent(locale)}` : '';
 
   const res = await paypalFetch('/v2/checkout/orders', {
     method: 'POST',
@@ -131,8 +134,8 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
             landing_page: 'LOGIN',
             shipping_preference: 'NO_SHIPPING',
             user_action: 'PAY_NOW',
-            return_url: `${origin}/api/paypal/return?ref=${encodeURIComponent(bookingRef)}`,
-            cancel_url: `${origin}/api/paypal/return?ref=${encodeURIComponent(bookingRef)}&cancelled=1`,
+            return_url: `${origin}/api/paypal/return?ref=${encodeURIComponent(bookingRef)}${returnLocaleParam}`,
+            cancel_url: `${origin}/api/paypal/return?ref=${encodeURIComponent(bookingRef)}&cancelled=1${returnLocaleParam}`,
           },
         },
       },

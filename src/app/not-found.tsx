@@ -19,9 +19,9 @@ export default function NotFound() {
             The link may be old or mistyped. Nothing is wrong with your booking. Pick where you&apos;d like to go next.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <ButtonLink href="/" size="lg">Back to home</ButtonLink>
-            <ButtonLink href="/book" size="lg" variant="secondary">Book a clean</ButtonLink>
-            <ButtonLink href="/account" size="lg" variant="secondary">My bookings</ButtonLink>
+            <ButtonLink href="/en" size="lg">Back to home</ButtonLink>
+            <ButtonLink href="/en/book" size="lg" variant="secondary">Book a clean</ButtonLink>
+            <ButtonLink href="/en/account" size="lg" variant="secondary">My bookings</ButtonLink>
           </div>
           <p className="mt-8 text-muted">
             Need a hand?{' '}

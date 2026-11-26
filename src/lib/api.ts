@@ -29,6 +29,20 @@ export function safeNext(next: string | null, fallback: string): string {
   if (!next || !next.startsWith('/') || next.startsWith('//') || next.includes('\\')) return fallback;
   // Only known pages, so a stale or mistyped ?next= never lands on a 404.
   const path = next.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
-  const known = ['/', '/book', '/login', '/account', '/cleaner', '/cleaner/login', '/cleaner/signup', '/admin', '/admin/login'];
-  return known.includes(path) ? next : fallback;
+  // Strip locale prefix for known check
+  const pathWithoutLocale = path.replace(/^\/(en|cn)(\/|$)/, '/') || '/';
+  const known = [
+    '/',
+    '/book',
+    '/hostel',
+    '/hostel/book',
+    '/login',
+    '/account',
+    '/cleaner',
+    '/cleaner/login',
+    '/cleaner/signup',
+    '/admin',
+    '/admin/login',
+  ];
+  return known.includes(pathWithoutLocale) ? next : fallback;
 }

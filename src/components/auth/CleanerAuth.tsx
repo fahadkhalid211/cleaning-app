@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ArrowLeft, Sparkles, UserCheck } from 'lucide-react';
+import { ArrowLeft, Sparkles } from 'lucide-react';
 import { Logo } from '@/components/site/Logo';
 import { cx } from '@/components/ui';
 import { CleanerRegisterForm, LoginForm } from './AuthForms';

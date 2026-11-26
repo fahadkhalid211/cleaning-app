@@ -44,8 +44,9 @@ export function daysBetween(a: string, b: string): number {
   return Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86_400_000);
 }
 
-export function formatDateLong(date: string): string {
-  return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', {
+export function formatDateLong(date: string, locale?: string): string {
+  const loc = locale === 'cn' ? 'zh-CN' : 'en-GB';
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString(loc, {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -53,12 +54,13 @@ export function formatDateLong(date: string): string {
   });
 }
 
-export function formatDateShort(date: string) {
+export function formatDateShort(date: string, locale?: string) {
+  const loc = locale === 'cn' ? 'zh-CN' : 'en-GB';
   const d = new Date(`${date}T12:00:00Z`);
   return {
-    weekday: d.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' }),
+    weekday: d.toLocaleDateString(loc, { weekday: 'short', timeZone: 'UTC' }),
     day: d.getUTCDate(),
-    month: d.toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' }),
+    month: d.toLocaleDateString(loc, { month: 'short', timeZone: 'UTC' }),
   };
 }
 

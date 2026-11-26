@@ -41,6 +41,7 @@ const nextConfig = {
       { source: '/:path*', headers: securityHeaders },
       // Logged-in areas must never be cached by a browser or proxy.
       { source: '/(account|admin|cleaner)/:path*', headers: [{ key: 'Cache-Control', value: 'no-store' }] },
+      { source: '/:locale(en|cn)/account/:path*', headers: [{ key: 'Cache-Control', value: 'no-store' }] },
     ];
   },
 };

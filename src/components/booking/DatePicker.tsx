@@ -6,6 +6,7 @@ import { SCHEDULE } from '@/lib/config';
 import { addDays, dayOfWeek, daysBetween, formatDateLong, formatDateShort, formatTime } from '@/lib/dates';
 import type { Slot } from '@/lib/types';
 import { Alert, cx, Spinner } from '@/components/ui';
+import { useI18n } from '@/lib/i18n';
 
 const PAGE = 14;
 
@@ -29,6 +30,7 @@ export function DateTimePicker({
   onDate: (d: string) => void;
   onTime: (m: number) => void;
 }) {
+  const { locale } = useI18n();
   const [shown, setShown] = useState(PAGE);
 
   const days = useMemo(() => {
@@ -47,13 +49,26 @@ export function DateTimePicker({
     <div className="space-y-8">
       <fieldset>
         <legend className="flex items-center gap-2 text-xl font-semibold mb-1">
-          <CalendarDays className="size-6 text-brand-strong" aria-hidden /> Pick a day
+          <CalendarDays className="size-6 text-brand-strong" aria-hidden />{' '}
+          {locale === 'cn' ? '选择上门日期' : 'Pick a day'}
         </legend>
-        <p className="text-muted mb-4">We clean Monday to Saturday. The earliest you can book is tomorrow.</p>
+        <p className="text-muted mb-4">
+          {locale === 'cn'
+            ? '我们周一至周六为您服务。最早可预约明天上门。'
+            : 'We clean Monday to Saturday. The earliest you can book is tomorrow.'}
+        </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
           {days.slice(0, shown).map((d) => {
             const f = formatDateShort(d);
             const selected = d === date;
+            const weekday =
+              locale === 'cn'
+                ? { Sun: '周日', Mon: '周一', Tue: '周二', Wed: '周三', Thu: '周四', Fri: '周五', Sat: '周六' }[f.weekday] || f.weekday
+                : f.weekday;
+            const month =
+              locale === 'cn'
+                ? { Jan: '1月', Feb: '2月', Mar: '3月', Apr: '4月', May: '5月', Jun: '6月', Jul: '7月', Aug: '8月', Sep: '9月', Oct: '10月', Nov: '11月', Dec: '12月' }[f.month] || f.month
+                : f.month;
             return (
               <button
                 key={d}
@@ -66,16 +81,16 @@ export function DateTimePicker({
                   selected ? 'border-brand-strong bg-brand-strong text-white' : 'border-line bg-white hover:border-ink/40',
                 )}
               >
-                <span className={cx('block text-sm font-medium', selected ? 'text-white/90' : 'text-muted')}>{f.weekday}</span>
+                <span className={cx('block text-sm font-medium', selected ? 'text-white/90' : 'text-muted')}>{weekday}</span>
                 <span className="block text-2xl font-semibold leading-tight">{f.day}</span>
-                <span className={cx('block text-sm', selected ? 'text-white/90' : 'text-muted')}>{f.month}</span>
+                <span className={cx('block text-sm', selected ? 'text-white/90' : 'text-muted')}>{month}</span>
               </button>
             );
           })}
         </div>
         {shown < days.length && (
           <button type="button" onClick={() => setShown((s) => s + PAGE)} className="mt-4 font-semibold text-brand-strong underline underline-offset-4">
-            Show later dates
+            {locale === 'cn' ? '查看更多后续日期' : 'Show later dates'}
           </button>
         )}
       </fieldset>
@@ -83,16 +98,25 @@ export function DateTimePicker({
       {date && (
         <fieldset className="animate-fade-up">
           <legend className="flex items-center gap-2 text-xl font-semibold mb-1">
-            <Clock className="size-6 text-brand-strong" aria-hidden /> Pick an arrival time
+            <Clock className="size-6 text-brand-strong" aria-hidden />{' '}
+            {locale === 'cn' ? '选择到达时段' : 'Pick an arrival time'}
           </legend>
           <p className="text-muted mb-4">
-            {formatDateLong(date)}. Your clean takes about <strong className="text-ink">{durationMin / 60} hours</strong>.
+            {locale === 'cn' ? (
+              <>
+                {formatDateLong(date)}。您的保洁预计需要 <strong className="text-ink">{durationMin / 60} 小时</strong>。
+              </>
+            ) : (
+              <>
+                {formatDateLong(date)}. Your clean takes about <strong className="text-ink">{durationMin / 60} hours</strong>.
+              </>
+            )}
           </p>
           {loadingSlots || !slots ? (
-            <Spinner label="Checking which times are free…" />
+            <Spinner label={locale === 'cn' ? '正在查询可用时段…' : 'Checking which times are free…'} />
           ) : !anyFree ? (
-            <Alert tone="warn" title="This day is fully booked">
-              Please choose another day.
+            <Alert tone="warn" title={locale === 'cn' ? '该日期已全部约满' : 'This day is fully booked'}>
+              {locale === 'cn' ? '请选择其他日期。' : 'Please choose another day.'}
             </Alert>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">

@@ -1,51 +1,73 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { ArrowLeft, Bed, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
 import { BRAND } from '@/lib/config';
 import { HostelBookingWizard } from '@/components/hostel/HostelBookingWizard';
 import { Spinner } from '@/components/ui';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
-export const metadata: Metadata = {
-  title: 'Choose Your Bed & Book | Interactive London Hostel Floorplan',
-  description:
-    'Select your exact bunk bed or pod in our Central London hostel. Interactive floorplan, upper/lower tier selection, add-on options, and secure PayPal deposit.',
-  openGraph: {
-    title: 'Interactive Bunk Bed Booking | Choose Your Bed on Live Map',
-    description:
-      'Airline-style interactive seat selection for London bunk beds. Pick your room, tier, and bed with live availability and instant confirmation.',
-    url: `${BRAND.url}/hostel/book`,
-    siteName: BRAND.name,
-    locale: 'en_GB',
-  },
-  alternates: {
-    canonical: `${BRAND.url}/hostel/book`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const dict = getDictionary(locale);
 
-export default function HostelBookPage() {
+  return {
+    title: dict.hostelBook.metaTitle,
+    description: dict.hostelBook.metaDesc,
+    openGraph: {
+      title: dict.hostelBook.metaTitle,
+      description: dict.hostelBook.metaDesc,
+      url: `${BRAND.url}/${locale}/hostel/book`,
+      siteName: BRAND.name,
+      locale: locale === 'cn' ? 'zh_CN' : 'en_GB',
+    },
+    alternates: {
+      canonical: `${BRAND.url}/${locale}/hostel/book`,
+      languages: {
+        en: `${BRAND.url}/en/hostel/book`,
+        zh: `${BRAND.url}/cn/hostel/book`,
+        'zh-CN': `${BRAND.url}/cn/hostel/book`,
+      },
+    },
+  };
+}
+
+export default async function HostelBookPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const validLocale: Locale = locale === 'cn' ? 'cn' : 'en';
+  const dict = getDictionary(validLocale);
+  const hb = dict.hostelBook;
+
   return (
     <div className="min-h-screen bg-soft/50 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Navigation Breadcrumb / Header */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <Link
-            href="/hostel"
+            href={`/${validLocale}/hostel`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-ink transition"
           >
             <ArrowLeft className="size-4" />
-            <span>Back to Hostel Overview</span>
+            <span>{hb.backToOverview}</span>
           </Link>
 
           <div className="flex items-center gap-3 text-xs sm:text-sm text-muted">
             <span className="flex items-center gap-1">
               <ShieldCheck className="size-4 text-emerald-600" />
-              <span>Instant Confirmation</span>
+              <span>{hb.instantConfirm}</span>
             </span>
             <span>·</span>
             <span className="flex items-center gap-1">
               <Sparkles className="size-4 text-brand-strong" />
-              <span>Live Graphical Bunk Map</span>
+              <span>{hb.liveBunkMap}</span>
             </span>
           </div>
         </div>
@@ -54,7 +76,7 @@ export default function HostelBookPage() {
         <Suspense
           fallback={
             <div className="py-24 text-center">
-              <Spinner label="Loading interactive bunk bed map and rooms..." />
+              <Spinner label={hb.loadingMap} />
             </div>
           }
         >

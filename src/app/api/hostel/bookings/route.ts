@@ -121,6 +121,8 @@ export const POST = route(async (req) => {
   let checkoutUrl: string | null = null;
   if (isPayPalConfigured()) {
     const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://hoodie.services';
+    const referer = req.headers.get('referer') || '';
+    const locale = referer.includes('/cn') ? 'cn' : 'en';
     checkoutUrl = await createCheckoutSession({
       bookingRef: ref,
       serviceTitle: `Hostel Bed ${bed.bedNumber} (${room.name})`,
@@ -128,6 +130,7 @@ export const POST = route(async (req) => {
       depositAmount,
       date: `${checkIn} to ${checkOut}`,
       origin,
+      locale,
     });
   }
 

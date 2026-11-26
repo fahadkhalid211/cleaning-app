@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { BRAND } from '@/lib/config';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Hoodie mark: a capital H that draws itself in, then a dot pops into the space
@@ -17,9 +20,16 @@ export function LogoMark({ size = 38 }: { size?: number }) {
   );
 }
 
-export function Logo({ href = '/', tone = 'dark' }: { href?: string; tone?: 'dark' | 'light' }) {
+export function Logo({ href, tone = 'dark' }: { href?: string; tone?: 'dark' | 'light' }) {
+  const { l } = useI18n();
+  const targetHref = href ?? l('/');
+
   return (
-    <Link href={href} className="hd-logo inline-flex items-center gap-2.5 font-bold text-[1.45rem] tracking-tight" aria-label={`${BRAND.name} home`}>
+    <Link
+      href={targetHref}
+      className="hd-logo inline-flex items-center gap-2.5 font-bold text-[1.45rem] tracking-tight"
+      aria-label={`${BRAND.name} home`}
+    >
       <LogoMark />
       <span className={tone === 'light' ? 'text-white' : 'text-ink'}>{BRAND.name}</span>
     </Link>
