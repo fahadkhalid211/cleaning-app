@@ -780,8 +780,14 @@ function PayDepositButton({ bookingRef, depositAmount }: { bookingRef: string; d
     }
   }
   return (
-    <Button variant="primary" size="sm" onClick={onPay} loading={busy}>
-      <Lock className="size-3.5" aria-hidden /> Pay deposit {depositAmount ? `(${formatMoney(depositAmount)})` : ''}
+    <Button variant="primary" size="sm" onClick={onPay} loading={busy} disabled={busy}>
+      {busy ? (
+        <span>Redirecting to PayPal...</span>
+      ) : (
+        <>
+          <Lock className="size-3.5" aria-hidden /> Pay deposit {depositAmount ? `(${formatMoney(depositAmount)})` : ''}
+        </>
+      )}
     </Button>
   );
 }

@@ -558,10 +558,11 @@ export function HostelBookingWizard() {
             <Button
               onClick={handleBook}
               disabled={submitting}
-              className="w-full justify-center shadow-pop text-base font-bold py-4"
+              loading={submitting}
+              className="w-full justify-center shadow-pop text-base font-bold py-3.5 text-white"
             >
               {submitting ? (
-                <Spinner label="Securing your bed..." />
+                <span>Redirecting to PayPal...</span>
               ) : paymentsEnabled ? (
                 <>
                   <CreditCard className="size-5" /> Pay Deposit with PayPal ({formatMoney(depositAmount)})

@@ -3,32 +3,55 @@ import { BRAND } from '@/lib/config';
 import { audit, getDb } from '@/lib/server/db';
 
 // PayPal Orders v2 over plain fetch (no SDK). Env: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET,
-// PAYPAL_ENV ("live" | "sandbox", default sandbox), PAYPAL_WEBHOOK_ID.
+// PAYPAL_ENV / PAYPAL_MODE ("live" | "production" | "sandbox", default sandbox), PAYPAL_WEBHOOK_ID.
 
 export function isPayPalConfigured(): boolean {
   return Boolean(process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET);
 }
 
+export function isPayPalLive(): boolean {
+  const raw = (
+    process.env.PAYPAL_ENV ||
+    process.env.PAYPAL_MODE ||
+    process.env.PAYPAL_ENVIRONMENT ||
+    process.env.NEXT_PUBLIC_PAYPAL_ENV ||
+    process.env.NEXT_PUBLIC_PAYPAL_MODE ||
+    ''
+  )
+    .trim()
+    .replace(/^["']|["']$/g, '')
+    .toLowerCase();
+
+  return raw === 'live' || raw === 'production' || raw === 'prod';
+}
+
 function baseUrl(): string {
-  return (process.env.PAYPAL_ENV || '').toLowerCase() === 'live'
+  return isPayPalLive()
     ? 'https://api-m.paypal.com'
     : 'https://api-m.sandbox.paypal.com';
 }
 
-let tokenCache: { token: string; expiresAt: number } | null = null;
+let tokenCache: { token: string; expiresAt: number; targetUrl: string } | null = null;
 
 async function accessToken(): Promise<string> {
-  if (tokenCache && tokenCache.expiresAt > Date.now() + 30_000) return tokenCache.token;
-  const basic = Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`).toString('base64');
-  const res = await fetch(`${baseUrl()}/v1/oauth2/token`, {
+  const currentBase = baseUrl();
+  if (tokenCache && tokenCache.targetUrl === currentBase && tokenCache.expiresAt > Date.now() + 30_000) {
+    return tokenCache.token;
+  }
+
+  const clientId = (process.env.PAYPAL_CLIENT_ID || '').trim().replace(/^["']|["']$/g, '');
+  const clientSecret = (process.env.PAYPAL_CLIENT_SECRET || '').trim().replace(/^["']|["']$/g, '');
+  const basic = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+  const res = await fetch(`${currentBase}/v1/oauth2/token`, {
     method: 'POST',
     headers: { Authorization: `Basic ${basic}`, 'Content-Type': 'application/x-www-form-urlencoded' },
     body: 'grant_type=client_credentials',
     cache: 'no-store',
   });
-  if (!res.ok) throw new Error(`PayPal auth failed (${res.status}): ${await res.text()}`);
+  if (!res.ok) throw new Error(`PayPal auth failed (${res.status}) on ${currentBase}: ${await res.text()}`);
   const data = (await res.json()) as { access_token: string; expires_in: number };
-  tokenCache = { token: data.access_token, expiresAt: Date.now() + data.expires_in * 1000 };
+  tokenCache = { token: data.access_token, expiresAt: Date.now() + data.expires_in * 1000, targetUrl: currentBase };
   return data.access_token;
 }
 
@@ -79,9 +102,11 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
 
   const isFull = depositAmount >= totalAmount;
   const description = (isFull
-    ? `${BRAND.name} - ${serviceTitle} Cleaning (${date}) ref ${bookingRef}`
-    : `${BRAND.name} - Deposit for ${serviceTitle} Cleaning (${date}) ref ${bookingRef}`
+    ? `${BRAND.name} - ${serviceTitle} (${date}) ref ${bookingRef}`
+    : `${BRAND.name} - Deposit for ${serviceTitle} (${date}) ref ${bookingRef}`
   ).slice(0, 127);
+
+  console.log(`[paypal] Creating order for ${bookingRef} on ${baseUrl()} (mode: ${isPayPalLive() ? 'LIVE' : 'SANDBOX'})...`);
 
   const res = await paypalFetch('/v2/checkout/orders', {
     method: 'POST',
