@@ -10,7 +10,9 @@ export async function GET(req: Request) {
   const locale = rawLocale === 'cn' ? 'cn' : 'en';
   // Never use url.origin: behind the host's proxy it is the internal address (0.0.0.0:3000).
   const base = (process.env.NEXT_PUBLIC_APP_URL || 'https://hoodie.services').replace(/\/+$/, '');
-  const to = (query: string) => NextResponse.redirect(`${base}/${locale}/account?${query}`, 303);
+  // Hostel (staff accommodation) bookings belong to cleaners, so they go back to the cleaner portal.
+  const dest = ref.startsWith('HDH-') ? '/cleaner' : `/${locale}/account`;
+  const to = (query: string) => NextResponse.redirect(`${base}${dest}?${query}`, 303);
 
   if (!/^[A-Za-z0-9-]{3,40}$/.test(ref)) return to('payment=failed');
   if (url.searchParams.get('cancelled') || !token) return to(`booked=${encodeURIComponent(ref)}&payment=cancelled`);

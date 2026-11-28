@@ -181,6 +181,11 @@ export const enDictionary: TranslationDictionary = {
         'Looking for reliable, well-paid cleaning jobs in your local area? Choose your own hours, manage your jobs online, and get paid weekly.',
       cleanerSignUp: 'Sign up as cleaner',
       cleanerLoginBtn: 'Cleaner portal log in',
+      staffStayBadge: 'Staff only',
+      staffStayTitle: 'Staff accommodation in Central London',
+      staffStayDesc:
+        'Our registered cleaners can book a bunk bed in our Central London hostel, close to their jobs. Log in to the cleaner portal to pick your bed.',
+      staffStayBtn: 'Book staff accommodation',
     },
     mobileBar: {
       bookAClean: 'Book a clean',

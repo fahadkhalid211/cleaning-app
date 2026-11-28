@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Car, CircleCheck, Clock, KeyRound, MapPin, Navigation, PawPrint, Phone, Play, StickyNote } from 'lucide-react';
 import { api, ApiError } from '@/lib/api';
@@ -8,6 +8,7 @@ import { formatDateLong, formatTimeRange } from '@/lib/dates';
 import { ACCESS_LABEL, type BookingStatus, type BookingView, type MeResponse } from '@/lib/types';
 import { DateBlock, StatusBadge } from '@/components/BookingBits';
 import { PortalShell } from '@/components/portal/PortalShell';
+import { StaffStays } from '@/components/hostel/StaffStays';
 import { Alert, Button, Card, Spinner } from '@/components/ui';
 
 const NEXT_ACTION: Partial<Record<BookingStatus, { to: BookingStatus; label: string; icon: typeof Car }>> = {
@@ -18,6 +19,7 @@ const NEXT_ACTION: Partial<Record<BookingStatus, { to: BookingStatus; label: str
 
 export function CleanerDashboard() {
   const router = useRouter();
+  const params = useSearchParams();
   const [me, setMe] = useState<MeResponse['user']>(null);
   const [data, setData] = useState<{ today: string; jobs: BookingView[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -186,6 +188,8 @@ export function CleanerDashboard() {
             </Card>
           )}
         </section>
+
+        <StaffStays justBooked={params.get('booked')} payment={params.get('payment')} />
       </main>
     </PortalShell>
   );

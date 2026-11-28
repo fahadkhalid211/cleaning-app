@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
-import { registerCustomer } from '@/lib/server/accounts';
-import { getSessionUser, requireUser } from '@/lib/server/auth';
+import { requireUser } from '@/lib/server/auth';
 import { clientIp, HttpError, rateLimit, readJson, route } from '@/lib/server/http';
 import { createHostelBooking, getHostelRoom, getHostelBeds, listHostelBookingsForCustomer } from '@/lib/server/hostel';
 import { calculateDeposit, createCheckoutSession, isPayPalConfigured } from '@/lib/server/paypal';
 import { HOSTEL_ADDONS_SEED } from '@/lib/hostel-seed';
 
 interface HostelBookingRequestBody {
-  account?: Record<string, unknown>;
   roomId?: string;
   bedId?: string;
   checkIn?: string;
@@ -21,8 +19,9 @@ interface HostelBookingRequestBody {
   addons?: unknown[];
 }
 
+// Staff accommodation: only logged-in cleaners can view or make hostel bookings.
 export const GET = route(async () => {
-  const user = await requireUser('customer');
+  const user = await requireUser('cleaner');
   return NextResponse.json({ bookings: listHostelBookingsForCustomer(user.id) });
 });
 
@@ -30,27 +29,17 @@ export const POST = route(async (req) => {
   rateLimit(`hostel_book:${clientIp(req)}`, 20, 60 * 60 * 1000);
   const body = (await readJson(req)) as HostelBookingRequestBody;
 
-  const user = await getSessionUser();
-  if (user && user.role !== 'customer') {
-    throw new HttpError(403, 'Staff accounts cannot make bookings. Please log out first.');
-  }
-
-  let customerId = user?.id;
-  if (!customerId) {
-    if (!body.account || typeof body.account !== 'object') {
-      throw new HttpError(401, 'Please create an account or log in to complete your hostel booking.');
-    }
-    customerId = await registerCustomer(body.account);
-  }
+  const user = await requireUser('cleaner');
+  const customerId = user.id;
 
   // Basic validation of body
   const roomId = String(body.roomId || '');
   const bedId = String(body.bedId || '');
   const checkIn = String(body.checkIn || '');
   const checkOut = String(body.checkOut || '');
-  const guestName = String(body.guestName || user?.name || '');
-  const guestEmail = String(body.guestEmail || user?.email || '');
-  const guestPhone = String(body.guestPhone || user?.phone || '');
+  const guestName = String(body.guestName || user.name || '');
+  const guestEmail = String(body.guestEmail || user.email || '');
+  const guestPhone = String(body.guestPhone || user.phone || '');
 
   if (!roomId || !bedId || !checkIn || !checkOut || !guestName || !guestEmail) {
     throw new HttpError(400, 'Missing required booking details.');

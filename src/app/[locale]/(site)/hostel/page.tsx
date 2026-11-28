@@ -29,20 +29,7 @@ export async function generateMetadata({
   return {
     title: dict.hostel.metaTitle,
     description: dict.hostel.metaDesc,
-    alternates: {
-      canonical: `${BRAND.url}/${locale}/hostel`,
-      languages: {
-        en: `${BRAND.url}/en/hostel`,
-        zh: `${BRAND.url}/cn/hostel`,
-        'zh-CN': `${BRAND.url}/cn/hostel`,
-      },
-    },
-    openGraph: {
-      title: dict.hostel.metaTitle,
-      description: dict.hostel.metaDesc,
-      url: `${BRAND.url}/${locale}/hostel`,
-      locale: locale === 'cn' ? 'zh_CN' : 'en_GB',
-    },
+    robots: { index: false, follow: false },
   };
 }
 
@@ -56,53 +43,10 @@ export default async function HostelLandingPage({
   const dict = getDictionary(validLocale);
   const h = dict.hostel;
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': ['Hostel', 'LodgingBusiness'],
-        '@id': `${BRAND.url}/${validLocale}/hostel#hostel`,
-        name: `${BRAND.name} Central London Hostel & Pods`,
-        url: `${BRAND.url}/${validLocale}/hostel`,
-        telephone: BRAND.phone,
-        email: BRAND.email,
-        description: dict.hostel.metaDesc,
-        priceRange: '£28 - £45',
-        currenciesAccepted: 'GBP',
-        paymentAccepted: 'Credit Card, Debit Card, PayPal, Cash',
-        checkinTime: '15:00',
-        checkoutTime: '11:00',
-        petsAllowed: false,
-        amenityFeature: [
-          { '@type': 'LocationFeatureSpecification', name: 'Free High-Speed Gigabit Wi-Fi', value: true },
-          { '@type': 'LocationFeatureSpecification', name: 'Electronic Keycard Lockers', value: true },
-          { '@type': 'LocationFeatureSpecification', name: 'Ensuite Showers', value: true },
-          { '@type': 'LocationFeatureSpecification', name: 'Air Conditioning & Climate Control', value: true },
-          { '@type': 'LocationFeatureSpecification', name: 'Acoustic Privacy Curtains', value: true },
-          { '@type': 'LocationFeatureSpecification', name: '24/7 Front Desk & Security', value: true },
-        ],
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': `${BRAND.url}/${validLocale}/hostel#faq`,
-        mainEntity: h.faqs.list.map((faq) => ({
-          '@type': 'Question',
-          name: faq.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: faq.a,
-          },
-        })),
-      },
-    ],
-  };
-
   const experienceIcons = [Compass, Moon, Zap, Lock, Luggage, CreditCard];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-brand-wash/50 via-white to-white pt-12 pb-20 border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">

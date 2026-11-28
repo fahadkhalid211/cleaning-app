@@ -9,8 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const publicRoutes = [
     { path: '', priority: 1.0, changeFrequency: 'daily' as const },
-    { path: '/hostel', priority: 0.95, changeFrequency: 'daily' as const },
-    { path: '/hostel/book', priority: 0.9, changeFrequency: 'daily' as const },
     { path: '/book', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/login', priority: 0.5, changeFrequency: 'monthly' as const },
   ];

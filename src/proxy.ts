@@ -48,6 +48,15 @@ export function proxy(req: NextRequest) {
     }
   }
 
+  // Staff accommodation (hostel) is for logged-in cleaners only
+  const isHostelPath = pathname === `/${currentLocale}/hostel` || pathname.startsWith(`/${currentLocale}/hostel/`);
+  if (isHostelPath && !req.cookies.get(SESSION_COOKIE)?.value) {
+    const url = req.nextUrl.clone();
+    url.pathname = '/cleaner/login';
+    url.search = `?next=${encodeURIComponent(pathname + search)}`;
+    return NextResponse.redirect(url);
+  }
+
   // Cleaner & Admin portals auth check
   if (pathname.startsWith('/cleaner') && pathname !== '/cleaner/login' && pathname !== '/cleaner/signup') {
     if (!req.cookies.get(SESSION_COOKIE)?.value) {

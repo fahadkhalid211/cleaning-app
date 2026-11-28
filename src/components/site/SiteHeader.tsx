@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { Bed, ChevronDown, Clock, Menu, Phone, User, X } from 'lucide-react';
+import { ChevronDown, Clock, Menu, Phone, User, X } from 'lucide-react';
 import { BRAND } from '@/lib/config';
 import { SERVICE_SEED } from '@/lib/catalog-seed';
 import type { MeResponse } from '@/lib/types';
@@ -74,12 +74,6 @@ export function SiteHeader() {
               >
                 {t.common.forBusinesses}
               </Link>
-              <Link
-                href={l('/hostel')}
-                className="rounded-full bg-brand/80 px-3 py-0.5 text-white hover:bg-brand text-xs font-semibold"
-              >
-                {t.common.hostelAndBunks}
-              </Link>
             </nav>
             <div className="flex items-center gap-6 text-white/85 text-xs sm:text-[0.85rem]">
               <span className="inline-flex items-center gap-1.5">
@@ -124,16 +118,6 @@ export function SiteHeader() {
                 </ul>
               </div>
             </div>
-            <Link
-              href={l('/hostel')}
-              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 hover:bg-soft text-brand-strong font-semibold"
-            >
-              <Bed className="size-4" aria-hidden />
-              <span>{t.common.hostelAndBunks}</span>
-              <span className="rounded-full bg-brand-light px-1.5 py-0.2 text-[10px] font-extrabold text-brand-strong uppercase">
-                {t.common.newBadge}
-              </span>
-            </Link>
             <Link href={l('/#how-it-works')} className="rounded-full px-4 py-2 hover:bg-soft">
               {t.common.howItWorks}
             </Link>
@@ -227,14 +211,6 @@ export function SiteHeader() {
                 <ButtonLink href={l('/book')} size="lg">
                   {t.common.bookAClean}
                 </ButtonLink>
-                <ButtonLink
-                  href={l('/hostel/book')}
-                  size="lg"
-                  variant="secondary"
-                  className="!text-brand-strong border-brand/30"
-                >
-                  <Bed className="size-5" aria-hidden /> {t.common.bookABunk}
-                </ButtonLink>
                 <ButtonLink href={accountHref} size="lg" variant="secondary">
                   <User className="size-5" aria-hidden /> {accountLabel}
                 </ButtonLink>
@@ -256,19 +232,6 @@ export function SiteHeader() {
               </div>
 
               <ul className="divide-y divide-line border-t border-line">
-                <li>
-                  <Link
-                    href={l('/hostel')}
-                    className="flex items-center justify-between py-3.5 text-base font-semibold text-brand-strong"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Bed className="size-5" /> {t.common.hostelAndBunks}
-                    </span>
-                    <span className="rounded-full bg-brand-light px-2 py-0.5 text-xs font-bold text-brand-strong">
-                      {t.common.newBadge}
-                    </span>
-                  </Link>
-                </li>
                 <li>
                   <Link href={l('/#how-it-works')} className="block py-3.5 text-base font-medium">
                     {t.common.howItWorks}

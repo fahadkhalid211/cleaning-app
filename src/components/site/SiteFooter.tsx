@@ -38,8 +38,6 @@ export function SiteFooter() {
         </div>
 
         <FooterCol title={t.common.services}>
-          <FooterLink href={l('/hostel')}>{t.common.hostelAndBunks}</FooterLink>
-          <FooterLink href={l('/hostel/book')}>{t.common.liveBunkSelector}</FooterLink>
           {localizedServices.map((s) => (
             <FooterLink key={s.id} href={l(`/book?service=${s.id}`)}>
               {s.title}

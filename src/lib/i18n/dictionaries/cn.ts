@@ -181,6 +181,11 @@ export const cnDictionary: TranslationDictionary = {
         '在伦敦当地寻找稳定、报酬优厚的工作机会？自由灵活选择接单工时、线上轻松管理排班、每周准时结算薪酬。',
       cleanerSignUp: '申请成为保洁师',
       cleanerLoginBtn: '保洁员入口登录',
+      staffStayBadge: '仅限员工',
+      staffStayTitle: '伦敦市中心员工住宿',
+      staffStayDesc:
+        '已注册的保洁师可预订我们位于伦敦市中心青年旅舍的床位，方便前往工作地点。请登录保洁员入口选择床位。',
+      staffStayBtn: '预订员工住宿',
     },
     mobileBar: {
       bookAClean: '立即预约保洁',

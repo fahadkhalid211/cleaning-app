@@ -5,6 +5,7 @@ import { connection } from 'next/server';
 import {
   ArrowRight,
   BadgeCheck,
+  Bed,
   CalendarClock,
   Check,
   CircleCheck,
@@ -480,6 +481,22 @@ function ClosingCta({
                 {c.cleanerLoginBtn}
               </Link>
             </div>
+          </div>
+
+          <div className="md:col-span-2 rounded-2xl border border-line bg-white p-8 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+                <Bed className="size-3.5" aria-hidden /> {c.staffStayBadge}
+              </span>
+              <h3 className="mt-4 text-2xl font-semibold">{c.staffStayTitle}</h3>
+              <p className="mt-2 text-muted leading-relaxed">{c.staffStayDesc}</p>
+            </div>
+            <Link
+              href={`/cleaner/login?next=${encodeURIComponent(`/${locale}/hostel/book`)}`}
+              className={buttonClass('primary', 'md', 'shrink-0')}
+            >
+              {c.staffStayBtn}
+            </Link>
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
-import { BRAND } from '@/lib/config';
 import { HostelBookingWizard } from '@/components/hostel/HostelBookingWizard';
 import { Spinner } from '@/components/ui';
 import { getDictionary, type Locale } from '@/lib/i18n';
@@ -18,21 +17,7 @@ export async function generateMetadata({
   return {
     title: dict.hostelBook.metaTitle,
     description: dict.hostelBook.metaDesc,
-    openGraph: {
-      title: dict.hostelBook.metaTitle,
-      description: dict.hostelBook.metaDesc,
-      url: `${BRAND.url}/${locale}/hostel/book`,
-      siteName: BRAND.name,
-      locale: locale === 'cn' ? 'zh_CN' : 'en_GB',
-    },
-    alternates: {
-      canonical: `${BRAND.url}/${locale}/hostel/book`,
-      languages: {
-        en: `${BRAND.url}/en/hostel/book`,
-        zh: `${BRAND.url}/cn/hostel/book`,
-        'zh-CN': `${BRAND.url}/cn/hostel/book`,
-      },
-    },
+    robots: { index: false, follow: false },
   };
 }
 

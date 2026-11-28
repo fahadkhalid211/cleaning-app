@@ -105,6 +105,10 @@ export interface TranslationDictionary {
       cleanerDesc: string;
       cleanerSignUp: string;
       cleanerLoginBtn: string;
+      staffStayBadge: string;
+      staffStayTitle: string;
+      staffStayDesc: string;
+      staffStayBtn: string;
     };
     mobileBar: {
       bookAClean: string;

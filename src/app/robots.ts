@@ -8,14 +8,14 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/hostel', '/hostel/book', '/book', '/cleaner/login', '/cleaner/signup', '/llms.txt', '/llms-full.txt'],
-        disallow: ['/admin/', '/api/', '/account', '/cleaner/jobs'],
+        allow: ['/', '/book', '/cleaner/login', '/cleaner/signup', '/llms.txt', '/llms-full.txt'],
+        disallow: ['/admin/', '/api/', '/account', '/cleaner/jobs', '/en/hostel', '/cn/hostel', '/hostel'],
       },
       {
         // Explicitly enable AI Search and LLM Grounding Crawlers
         userAgent: ['GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'Google-Extended', 'Applebot-Extended'],
-        allow: ['/', '/hostel', '/hostel/book', '/book', '/cleaner/signup', '/llms.txt', '/llms-full.txt'],
-        disallow: ['/admin/', '/api/', '/account', '/cleaner/jobs'],
+        allow: ['/', '/book', '/cleaner/signup', '/llms.txt', '/llms-full.txt'],
+        disallow: ['/admin/', '/api/', '/account', '/cleaner/jobs', '/en/hostel', '/cn/hostel', '/hostel'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

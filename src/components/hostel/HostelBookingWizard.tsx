@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -28,7 +27,7 @@ function formatBedBadge(bedNumber: string): string {
 export function HostelBookingWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t, l, locale } = useI18n();
+  const { t, locale } = useI18n();
   const hb = t.hostelBook;
   const dt = hb.detailsStep;
 
@@ -62,7 +61,6 @@ export function HostelBookingWizard() {
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
   const [guestGender, setGuestGender] = useState('unspecified');
-  const [password, setPassword] = useState('');
   const [eta, setEta] = useState('14:00 - 16:00');
   const [specialRequests, setSpecialRequests] = useState('');
 
@@ -164,8 +162,12 @@ export function HostelBookingWizard() {
       return;
     }
 
-    if (!me && (!password || password.length < 8)) {
-      setError(locale === 'cn' ? '请设置至少8位数的账户密码。' : 'Please choose a password with at least 8 characters.');
+    if (!me || me.role !== 'cleaner') {
+      setError(
+        locale === 'cn'
+          ? '员工住宿仅限已登录的保洁师预订。'
+          : 'Staff accommodation can only be booked from a cleaner account. Please log in to the cleaner portal.',
+      );
       return;
     }
 
@@ -174,14 +176,6 @@ export function HostelBookingWizard() {
 
     try {
       const payload = {
-        account: me
-          ? undefined
-          : {
-              name: guestName.trim(),
-              email: guestEmail.trim(),
-              phone: guestPhone.trim(),
-              password,
-            },
         roomId: currentRoom.id,
         bedId: selectedBed.id,
         checkIn,
@@ -208,7 +202,7 @@ export function HostelBookingWizard() {
       if (res.checkoutUrl) {
         window.location.href = res.checkoutUrl;
       } else {
-        router.push(l(`/account?booked=${encodeURIComponent(res.ref)}`));
+        router.push(`/cleaner?booked=${encodeURIComponent(res.ref)}`);
       }
     } catch (err: unknown) {
       const message =
@@ -559,34 +553,6 @@ export function HostelBookingWizard() {
               />
             </div>
 
-            {/* Seamless Account Creation for Guests */}
-            {!me && (
-              <div className="p-4 bg-cream/70 rounded-2xl border border-amber-200/60 space-y-2">
-                <p className="font-bold text-xs text-ink">{dt.createPasswordLabel}</p>
-                <p className="text-[11px] text-muted">
-                  {locale === 'cn'
-                    ? '您可使用此密码登录个人账户中心，随时查看青旅订单、门禁密码及支付收据。'
-                    : 'You will use this password to view your hostel reservation, door access codes, and payment receipt in your dashboard.'}
-                </p>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={dt.createPasswordPlaceholder}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-line text-sm bg-white focus:border-brand focus:ring-1 focus:ring-brand outline-none"
-                />
-                <p className="text-[11px] text-muted pt-1">
-                  {locale === 'cn' ? '已有账户？' : 'Already have an account?'}{' '}
-                  <Link
-                    href={l(`/login?next=${encodeURIComponent(l('/hostel/book'))}`)}
-                    className="font-semibold text-brand underline"
-                  >
-                    {locale === 'cn' ? '点击在此登录' : 'Log in here'}
-                  </Link>
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Final Payment & Submission */}

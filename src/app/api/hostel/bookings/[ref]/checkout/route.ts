@@ -7,7 +7,7 @@ import { createCheckoutSession, isPayPalConfigured } from '@/lib/server/paypal';
 type Ctx = { params: Promise<{ ref: string }> };
 
 export const POST = route<Ctx>(async (req, { params }) => {
-  const user = await requireUser('customer');
+  const user = await requireUser('cleaner');
   const { ref } = await params;
 
   const booking = getHostelBookingForCustomer(user.id, ref);
