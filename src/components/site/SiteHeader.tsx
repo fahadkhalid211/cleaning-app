@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Clock, Menu, Phone, User, X } from 'lucide-react';
+import { ChevronDown, Menu, Phone, User, X } from 'lucide-react';
 import { BRAND } from '@/lib/config';
 import { SERVICE_SEED } from '@/lib/catalog-seed';
 import type { MeResponse } from '@/lib/types';
@@ -60,35 +60,7 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
-        {/* Utility bar */}
-        <div className="hidden md:block bg-ink text-white text-[0.9rem]">
-          <div className="mx-auto max-w-7xl px-6 h-10 flex items-center justify-between">
-            <nav aria-label="Audience" className="flex items-center gap-1.5">
-              <span className="rounded-full bg-white/15 px-3 py-0.5 font-semibold text-xs">
-                {t.common.forHomes}
-              </span>
-              <Link
-                href={l('/#business')}
-                className="rounded-full px-3 py-0.5 text-white/80 hover:text-white text-xs"
-              >
-                {t.common.forBusinesses}
-              </Link>
-            </nav>
-            <div className="flex items-center gap-6 text-white/85 text-xs sm:text-[0.85rem]">
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="size-3.5" aria-hidden /> {t.common.hours}
-              </span>
-              <a
-                href={BRAND.phoneHref}
-                className="inline-flex items-center gap-1.5 font-semibold text-white hover:underline"
-              >
-                <Phone className="size-3.5" aria-hidden /> {BRAND.phone}
-              </a>
-            </div>
-          </div>
-        </div>
-
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-line/70">
         {/* Main bar */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 h-18 flex items-center justify-between gap-3 sm:gap-4">
           <Logo href={l('/')} />
@@ -147,7 +119,7 @@ export function SiteHeader() {
 
             <a
               href={BRAND.phoneHref}
-              className="sm:hidden flex size-10 items-center justify-center rounded-full border border-line"
+              className="hidden min-[400px]:flex sm:hidden size-10 items-center justify-center rounded-full border border-line"
               aria-label={`${t.common.callUs} ${BRAND.phone}`}
             >
               <Phone className="size-4" aria-hidden />

@@ -166,7 +166,7 @@ export function BunkBedMap({ room, beds, selectedBedId, onSelectBed, nights }: B
             <span className="text-muted text-[11px] sm:text-xs">{hb.legend.available}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="size-3 rounded bg-brand border-2 border-brand-strong inline-block shadow-sm" />
+            <span className="size-3 rounded bg-hostel border-2 border-ink inline-block shadow-sm" />
             <span className="text-ink font-semibold text-[11px] sm:text-xs">{hb.legend.yourBed}</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -408,7 +408,7 @@ function BedSlotCard({
         isDimmed ? 'opacity-40' : 'opacity-100'
       } ${
         isSelected
-          ? 'bg-gradient-to-r from-brand to-brand-strong text-white border-white shadow-pop scale-[1.01] ring-2 ring-brand/40'
+          ? 'bg-hostel text-ink border-white shadow-pop scale-[1.01] ring-2 ring-hostel/50'
           : isOccupied
           ? 'bg-slate-900/60 border-slate-700/60 text-slate-500 cursor-not-allowed'
           : 'bg-slate-900/90 border-slate-700 text-slate-200 hover:border-emerald-400 hover:bg-slate-800 hover:shadow-card cursor-pointer'
@@ -428,7 +428,7 @@ function BedSlotCard({
           <span
             className={`font-semibold text-xs tracking-tight px-1.5 py-0.5 rounded transition ${
               isSelected
-                ? 'bg-white text-brand-strong'
+                ? 'bg-ink text-hostel'
                 : isOccupied
                 ? 'bg-slate-800 text-slate-500'
                 : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
@@ -438,7 +438,7 @@ function BedSlotCard({
           </span>
           <span
             className={`text-[10px] uppercase tracking-wider font-semibold truncate ${
-              isSelected ? 'text-white/90' : 'text-slate-400'
+              isSelected ? 'text-ink/80' : 'text-slate-400'
             }`}
           >
             {bed.tier === 'top' ? hb.podCard.upper : hb.podCard.lower}
@@ -448,7 +448,7 @@ function BedSlotCard({
         {/* Right: Price Tag or Status */}
         <div className="shrink-0">
           {isSelected ? (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-white text-brand-strong px-2 py-0.5 rounded-full shadow-sm">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-ink text-hostel px-2 py-0.5 rounded-full shadow-sm">
               <Check className="size-2.5" strokeWidth={3} /> {hb.podCard.selectedLabel}
             </span>
           ) : isOccupied ? (
@@ -467,7 +467,7 @@ function BedSlotCard({
       <div
         className={`w-full rounded-lg p-2 flex items-center justify-between border ${
           isSelected
-            ? 'bg-white/15 border-white/20'
+            ? 'bg-ink/10 border-ink/20'
             : isOccupied
             ? 'bg-slate-950/40 border-slate-800'
             : 'bg-slate-950/80 border-slate-800'
@@ -478,7 +478,7 @@ function BedSlotCard({
           <div
             className={`w-5 h-3.5 rounded-xs shrink-0 border ${
               isSelected
-                ? 'bg-white/90 border-white'
+                ? 'bg-white border-ink/30'
                 : isOccupied
                 ? 'bg-slate-800 border-slate-700'
                 : 'bg-slate-700 border-slate-600'
@@ -488,12 +488,12 @@ function BedSlotCard({
           <div className="flex flex-col min-w-0 truncate">
             <span
               className={`text-[10px] sm:text-[11px] font-medium truncate ${
-                isSelected ? 'text-white' : 'text-slate-300'
+                isSelected ? 'text-ink' : 'text-slate-300'
               }`}
             >
               {bed.tier === 'top' ? hb.podCard.topSingle : hb.podCard.bottomSingle}
             </span>
-            <span className={`text-[9px] sm:text-[10px] ${isSelected ? 'text-white/80' : 'text-slate-500'}`}>
+            <span className={`text-[9px] sm:text-[10px] ${isSelected ? 'text-ink/70' : 'text-slate-500'}`}>
               {hb.podCard.dimensions}
             </span>
           </div>

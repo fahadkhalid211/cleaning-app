@@ -407,7 +407,7 @@ function CancelDialog({
             <Button variant="secondary" onClick={onClose}>
               {locale === 'cn' ? '保留预约' : 'No, keep it'}
             </Button>
-            <Button variant="primary" className="!bg-danger hover:!bg-danger/90" onClick={confirm} loading={busy}>
+            <Button variant="primary" className="!bg-none !bg-danger !shadow-none hover:!bg-danger/90" onClick={confirm} loading={busy}>
               {locale === 'cn' ? '确认取消' : 'Yes, cancel booking'}
             </Button>
           </div>

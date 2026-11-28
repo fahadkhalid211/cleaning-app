@@ -230,23 +230,23 @@ export function HostelBookingWizard() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-10 space-y-8">
       {/* Step Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-line shadow-card">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 bg-ink text-white p-6 sm:p-8 rounded-[2rem]">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-brand-strong uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-bold text-hostel uppercase tracking-[0.14em]">
             <span>{t.common.hostelAndBunks}</span>
             <span>•</span>
             <span>London Central</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-ink mt-1">
+          <h1 className="text-3xl sm:text-5xl font-extrabold mt-2">
             {locale === 'cn' ? '挑选并预订您的床位' : 'Reserve Your Bunk Bed'}
           </h1>
         </div>
 
         {/* Date Selector Strip */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 bg-soft p-2.5 sm:p-3 rounded-2xl border border-line">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 bg-hostel text-ink p-2.5 sm:p-3 rounded-[1.5rem]">
           <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
             <div>
-              <label className="block text-[10px] font-bold text-muted uppercase">{hb.dates.checkIn}</label>
+              <label className="block text-[10px] font-bold text-ink/70 uppercase tracking-wider mb-1">{hb.dates.checkIn}</label>
               <input
                 type="date"
                 value={checkIn}
@@ -259,12 +259,12 @@ export function HostelBookingWizard() {
                     setCheckOut(nxt.toISOString().split('T')[0]);
                   }
                 }}
-                className="w-full bg-white border border-line rounded-lg px-2.5 py-1.5 text-xs font-semibold text-ink"
+                className="w-full bg-white rounded-xl px-3 py-2.5 text-sm font-bold text-ink"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-muted uppercase">{hb.dates.checkOut}</label>
+              <label className="block text-[10px] font-bold text-ink/70 uppercase tracking-wider mb-1">{hb.dates.checkOut}</label>
               <input
                 type="date"
                 value={checkOut}
@@ -276,13 +276,13 @@ export function HostelBookingWizard() {
                 onChange={(e) => {
                   if (e.target.value) setCheckOut(e.target.value);
                 }}
-                className="w-full bg-white border border-line rounded-lg px-2.5 py-1.5 text-xs font-semibold text-ink"
+                className="w-full bg-white rounded-xl px-3 py-2.5 text-sm font-bold text-ink"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between sm:justify-start gap-2 pt-2 sm:pt-0 sm:pl-3 border-t sm:border-t-0 sm:border-l border-line text-xs font-bold text-brand-strong">
-            <span className="sm:hidden text-muted font-normal">{locale === 'cn' ? '入住时长：' : 'Duration:'}</span>
+          <div className="flex items-center justify-between sm:justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-sm font-extrabold text-hostel">
+            <span className="sm:hidden text-white/70 font-normal">{locale === 'cn' ? '入住时长：' : 'Duration:'}</span>
             <span>{hb.dates.nightsCount(nights)}</span>
           </div>
         </div>
@@ -304,17 +304,17 @@ export function HostelBookingWizard() {
                     key={room.id}
                     type="button"
                     onClick={() => setActiveRoomId(room.id)}
-                    className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2 border ${
+                    className={`px-5 py-3 rounded-full font-bold text-sm whitespace-nowrap transition flex items-center gap-2 border-2 ${
                       isActive
-                        ? 'bg-ink text-white border-ink shadow-md'
-                        : 'bg-white text-muted hover:text-ink border-line hover:border-slate-400'
+                        ? 'bg-hostel text-ink border-ink'
+                        : 'bg-white text-ink/70 hover:text-ink border-line hover:border-ink'
                     }`}
                   >
                     <Bed className="size-4" />
                     <span>{name}</span>
                     <span
                       className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                        isActive ? 'bg-white/20 text-white' : 'bg-soft text-slate-600'
+                        isActive ? 'bg-ink text-hostel' : 'bg-soft text-slate-600'
                       }`}
                     >
                       {t.common.from} {formatMoney(room.basePriceNight)}
@@ -342,7 +342,7 @@ export function HostelBookingWizard() {
 
           {/* Right Column: Live Selection Card & Pricing Summary */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-3xl p-6 border border-line shadow-card space-y-6 sticky top-24">
+            <div className="bg-white rounded-[2rem] p-6 border-2 border-ink shadow-[6px_6px_0_var(--color-hostel)] space-y-6 sticky top-24">
               <div>
                 <h3 className="text-lg font-bold text-ink">{dt.bookingSummaryTitle}</h3>
                 <p className="text-xs text-muted">{locale === 'cn' ? '实时核对您的选床与行程' : 'Review your selection'}</p>
@@ -432,8 +432,9 @@ export function HostelBookingWizard() {
                   </div>
 
                   <Button
+                    variant="dark"
                     onClick={() => setStep('details')}
-                    className="w-full justify-center shadow-pop text-sm font-bold py-3.5"
+                    className="w-full justify-center text-hostel font-extrabold italic uppercase tracking-tight py-3.5"
                   >
                     {hb.summaryBar.continueBtn} <ChevronRight className="size-4" />
                   </Button>
@@ -574,7 +575,8 @@ export function HostelBookingWizard() {
               onClick={handleBook}
               disabled={submitting}
               loading={submitting}
-              className="w-full justify-center shadow-pop text-base font-bold py-3.5 text-white"
+              variant="dark"
+              className="w-full justify-center text-hostel text-base font-extrabold italic uppercase tracking-tight py-3.5"
             >
               {submitting ? (
                 <span>{dt.processingPayment}</span>

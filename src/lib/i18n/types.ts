@@ -51,6 +51,18 @@ export interface TranslationDictionary {
       noCardNeeded: string;
       payAfter: string;
       imgAlt: string;
+      eyebrow: string;
+      sub: string;
+      previewConfirmed: string;
+      previewWhen: string;
+      previewCleaner: string;
+      previewCleanerName: string;
+      previewIncludes: string;
+      previewIncludesValue: string;
+      previewTotal: string;
+      statFrom: string;
+      statBook: string;
+      statGuarantee: string;
     };
     trust: {
       vetted: string;
